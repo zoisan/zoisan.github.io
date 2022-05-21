@@ -12,12 +12,22 @@
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
+
+### Machine Learning 
+
 [Project 3 Title](http://example.com/)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
 
-### Category Name 2
+### NLP 
+
+[Project 4 Title](http://example.com/)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
+### Micro Projects
 
 - [Data Analysis in Pandas](http://example.com/)
 - [EDA and Visualizations](http://example.com/)
@@ -26,7 +36,10 @@
 - [Project 5 Title](http://example.com/)
 
 ---
+### My Lesson Notes
 
+- [Pandas](/pdf/Pandas.pdf)
+- [Data Visualizations](/pdf/Data_Visualizations.pdf)
 
 
 
