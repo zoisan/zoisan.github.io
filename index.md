@@ -19,9 +19,9 @@
 
 ### Category Name 2
 
-- [Project 1 Title](http://example.com/)
-- [Project 2 Title](http://example.com/)
-- [Project 3 Title](http://example.com/)
+- [Data Analysis in Pandas](http://example.com/)
+- [EDA and Visualizations](http://example.com/)
+- [Probability, Statistics and Simulations](http://example.com/)
 - [Project 4 Title](http://example.com/)
 - [Project 5 Title](http://example.com/)
 
