@@ -1,10 +1,10 @@
-## Portfolio
+## My Data Science Portfolio
 
 ---
 
-### Category Name 1 
+### Linear Modeling 
 
-[Project 1 Title](/sample_page)
+[Diabetes Dataset Modeling](/sample_page)
 <img src="images/dummy_thumbnail.jpg?raw=true"/>
 
 ---
