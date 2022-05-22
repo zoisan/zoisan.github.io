@@ -31,6 +31,13 @@ Repository containing portfolio of data science projects completed by me for sel
 
 ---
 
+### Competetions 
+
+[Kaggle](http://example.com/)
+<img src="images/dummy_thumbnail.jpg?raw=true"/>
+
+---
+
 ### Micro Projects
 
 - [Data Analysis in Pandas](http://example.com/)
