@@ -11,7 +11,7 @@ Repository containing portfolio of data science projects completed by me for sel
 I have completed several projects regarding linear modeling.
 
 [Diabetes Dataset Modeling](/sample_page)
-<img src="images/diabetes1.png?raw=true"/>
+<img src="images/diabetes2.png?raw=true"/>
 
 ---
 [Project 2 Title](/pdf/sample_presentation.pdf)
