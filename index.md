@@ -6,7 +6,7 @@ Repository containing portfolio of data science projects completed by me for sel
 
 ---
 
-### Linear Modeling 
+### Modeling with Linear and Polynomial Regression
 
 I have completed several projects regarding linear modeling.
 
