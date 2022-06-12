@@ -35,7 +35,7 @@ I have completed several projects regarding linear modeling.
 
 ### Competetions 
 
-[Kaggle](/titanic.ipynb)
+[Kaggle](https://github.com/zoisan/zoisan.github.io/blob/master/titanic.ipynb)
 
 
 ---
