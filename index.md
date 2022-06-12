@@ -11,10 +11,10 @@ Repository containing portfolio of data science projects completed by me for sel
 I have completed several projects regarding linear modeling.
 
 [Diabetes Dataset](/diabetes)
+
 <img src="images/diabetes2.png?raw=true"/>
 
----
-[Project 2 Title](/pdf/sample_presentation.pdf)
+
 
 
 ---
@@ -35,7 +35,7 @@ I have completed several projects regarding linear modeling.
 
 ### Competetions 
 
-[Kaggle](http://example.com/)
+[Kaggle](/titanic.ipynb)
 
 
 ---
