@@ -6,16 +6,34 @@ Repository containing portfolio of data science projects completed by me for sel
 
 ---
 
-### Modeling with Linear and Polynomial Regression
+### Diamonds price prediction with Regression Models
 
-I have completed several projects regarding linear modeling.
+In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
-[Diabetes Dataset](/diabetes)
+[Diamonds](/diamonds)
 
-<img src="images/diabetes2.png?raw=true"/>
+<img src="images/diamonds.png?raw=true"/>
 
 
+---
 
+### Diabetes disease progression prediction with Regression Models
+
+In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
+
+[Diabetes](/diabetes)
+
+<img src="images/diabetes.png?raw=true"/>
+
+---
+
+### Titanic passanger survival prediction with Classification Models
+
+In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
+
+[Titanic](/titanic)
+
+<img src="images/titanic.png?raw=true"/>
 
 ---
 
