@@ -10,7 +10,7 @@ Repository containing portfolio of data science projects completed by me for sel
 
 In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
-[Diamonds](/diamonds.ipynb)
+[Diamonds](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.ipynb)
 
 <img src="images/diamonds.png?raw=true"/>
 
