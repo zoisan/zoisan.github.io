@@ -10,7 +10,7 @@ Repository containing portfolio of data science projects completed by me for sel
 
 In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
-[Diamonds](/diamonds)
+[Diamonds](/diamonds.ipynb)
 
 <img src="images/diamonds.png?raw=true"/>
 
@@ -21,7 +21,7 @@ In this project, I analyze diamonds dataset and build Machine Learning models to
 
 In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
 
-[Diabetes](/diabetes)
+[Diabetes](/diabetes.ipynb)
 
 <img src="images/diabetes.png?raw=true"/>
 
