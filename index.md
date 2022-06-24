@@ -31,7 +31,7 @@ In this project, I analyze diabetes dataset and build Machine Learning models to
 
 In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
-[Titanic](/titanic)
+[Titanic](/titanic.ipynb)
 
 <img src="images/titanic.png?raw=true"/>
 
