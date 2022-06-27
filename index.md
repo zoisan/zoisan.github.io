@@ -20,7 +20,7 @@ In this project, I analyze diamonds dataset and build Machine Learning models to
 
 In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
 
-[Diabetes](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.ipynb)
+[Diabetes](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
 
 <img src="images/diabetes.png?raw=true"/>
 
@@ -30,7 +30,7 @@ In this project, I analyze diabetes dataset and build Machine Learning models to
 
 In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
-[Titanic](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.ipynb)
+[Titanic](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
 <img src="images/titanic.png?raw=true"/>
 
