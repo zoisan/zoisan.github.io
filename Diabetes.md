@@ -1,0 +1,4774 @@
+# DIABETES 
+
+ismailsavruk@gmail.com © 2022
+
+In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
+
+Dataset from: https://www4.stat.ncsu.edu/~boos/var.select/diabetes.tab.txt
+
+## 1. Importing  Libraries and Loading Dataset
+
+Let's start by importing necessary libraries first.
+
+
+```python
+# Load libraries
+import numpy as np
+import pandas as pd
+from pandas import read_csv
+from pandas.plotting import scatter_matrix
+import seaborn as sns
+import matplotlib as mpl
+import matplotlib.pyplot as plt
+import matplotlib.pylab as pylab
+
+%matplotlib inline
+
+from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_val_score
+from sklearn import linear_model
+
+from sklearn.preprocessing import StandardScaler, MinMaxScaler
+from sklearn import metrics
+
+from xgboost import XGBRegressor
+from sklearn.ensemble import GradientBoostingRegressor
+from catboost import CatBoostRegressor
+from sklearn.kernel_ridge import KernelRidge
+from xgboost.sklearn import XGBRegressor
+from lightgbm import LGBMRegressor
+from sklearn.linear_model import LinearRegression, Lasso, Ridge, BayesianRidge, SGDRegressor, ElasticNet, Lars
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.svm import SVR, LinearSVR
+from sklearn.neighbors import KNeighborsRegressor
+from sklearn.ensemble import RandomForestRegressor
+
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.model_selection import RepeatedKFold
+from sklearn.model_selection import RandomizedSearchCV
+
+import warnings
+#warnings.filterwarnings('ignore')
+```
+
+
+```python
+# Load dataset
+diabetes = pd.read_csv('Diabetes.csv')
+```
+
+Let's take a look at the dataset.
+
+
+```python
+diabetes
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>59</td>
+      <td>2</td>
+      <td>32.1</td>
+      <td>101.00</td>
+      <td>157</td>
+      <td>93.2</td>
+      <td>38.0</td>
+      <td>4.00</td>
+      <td>4.8598</td>
+      <td>87</td>
+      <td>151</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48</td>
+      <td>1</td>
+      <td>21.6</td>
+      <td>87.00</td>
+      <td>183</td>
+      <td>103.2</td>
+      <td>70.0</td>
+      <td>3.00</td>
+      <td>3.8918</td>
+      <td>69</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>72</td>
+      <td>2</td>
+      <td>30.5</td>
+      <td>93.00</td>
+      <td>156</td>
+      <td>93.6</td>
+      <td>41.0</td>
+      <td>4.00</td>
+      <td>4.6728</td>
+      <td>85</td>
+      <td>141</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>24</td>
+      <td>1</td>
+      <td>25.3</td>
+      <td>84.00</td>
+      <td>198</td>
+      <td>131.4</td>
+      <td>40.0</td>
+      <td>5.00</td>
+      <td>4.8903</td>
+      <td>89</td>
+      <td>206</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50</td>
+      <td>1</td>
+      <td>23.0</td>
+      <td>101.00</td>
+      <td>192</td>
+      <td>125.4</td>
+      <td>52.0</td>
+      <td>4.00</td>
+      <td>4.2905</td>
+      <td>80</td>
+      <td>135</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>437</th>
+      <td>60</td>
+      <td>2</td>
+      <td>28.2</td>
+      <td>112.00</td>
+      <td>185</td>
+      <td>113.8</td>
+      <td>42.0</td>
+      <td>4.00</td>
+      <td>4.9836</td>
+      <td>93</td>
+      <td>178</td>
+    </tr>
+    <tr>
+      <th>438</th>
+      <td>47</td>
+      <td>2</td>
+      <td>24.9</td>
+      <td>75.00</td>
+      <td>225</td>
+      <td>166.0</td>
+      <td>42.0</td>
+      <td>5.00</td>
+      <td>4.4427</td>
+      <td>102</td>
+      <td>104</td>
+    </tr>
+    <tr>
+      <th>439</th>
+      <td>60</td>
+      <td>2</td>
+      <td>24.9</td>
+      <td>99.67</td>
+      <td>162</td>
+      <td>106.6</td>
+      <td>43.0</td>
+      <td>3.77</td>
+      <td>4.1271</td>
+      <td>95</td>
+      <td>132</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>36</td>
+      <td>1</td>
+      <td>30.0</td>
+      <td>95.00</td>
+      <td>201</td>
+      <td>125.2</td>
+      <td>42.0</td>
+      <td>4.79</td>
+      <td>5.1299</td>
+      <td>85</td>
+      <td>220</td>
+    </tr>
+    <tr>
+      <th>441</th>
+      <td>36</td>
+      <td>1</td>
+      <td>19.6</td>
+      <td>71.00</td>
+      <td>250</td>
+      <td>133.2</td>
+      <td>97.0</td>
+      <td>3.00</td>
+      <td>4.5951</td>
+      <td>92</td>
+      <td>57</td>
+    </tr>
+  </tbody>
+</table>
+<p>442 rows × 11 columns</p>
+</div>
+
+
+
+### Content
+
+"Ten baseline variables, age, sex, body mass index, average blood pressure, and six blood serum measurements were obtained for each of n = 442 diabetes patients, as well as the response of interest, a quantitative measure of disease progression one year after baseline."
+
+
+```python
+#shape
+diabetes.shape
+```
+
+
+
+
+    (442, 11)
+
+
+
+
+```python
+diabetes.head()
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>59</td>
+      <td>2</td>
+      <td>32.1</td>
+      <td>101.0</td>
+      <td>157</td>
+      <td>93.2</td>
+      <td>38.0</td>
+      <td>4.0</td>
+      <td>4.8598</td>
+      <td>87</td>
+      <td>151</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48</td>
+      <td>1</td>
+      <td>21.6</td>
+      <td>87.0</td>
+      <td>183</td>
+      <td>103.2</td>
+      <td>70.0</td>
+      <td>3.0</td>
+      <td>3.8918</td>
+      <td>69</td>
+      <td>75</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>72</td>
+      <td>2</td>
+      <td>30.5</td>
+      <td>93.0</td>
+      <td>156</td>
+      <td>93.6</td>
+      <td>41.0</td>
+      <td>4.0</td>
+      <td>4.6728</td>
+      <td>85</td>
+      <td>141</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>24</td>
+      <td>1</td>
+      <td>25.3</td>
+      <td>84.0</td>
+      <td>198</td>
+      <td>131.4</td>
+      <td>40.0</td>
+      <td>5.0</td>
+      <td>4.8903</td>
+      <td>89</td>
+      <td>206</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50</td>
+      <td>1</td>
+      <td>23.0</td>
+      <td>101.0</td>
+      <td>192</td>
+      <td>125.4</td>
+      <td>52.0</td>
+      <td>4.0</td>
+      <td>4.2905</td>
+      <td>80</td>
+      <td>135</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Let's see the target values. These will be our Y values.
+
+
+```python
+# Checking for missing values
+diabetes.isna().sum()
+```
+
+
+
+
+    AGE    0
+    SEX    0
+    BMI    0
+    BP     0
+    S1     0
+    S2     0
+    S3     0
+    S4     0
+    S5     0
+    S6     0
+    Y      0
+    dtype: int64
+
+
+
+No missing values, great!
+
+
+```python
+#identify duplicate rows
+duplicateRows = diabetes[diabetes.duplicated()]
+
+#view duplicate rows
+duplicateRows
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+</div>
+
+
+
+No duplicates, awesome!
+
+## 2. Train and Test Data Split
+
+It is very important to split the test data before data preprocessing steps to avoid data leakage!
+
+We will set aside our test data and only use training data first. Then we will take similar preprocessing steps for test data.
+
+
+```python
+# X values
+X = diabetes.drop(columns='Y')
+X
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>59</td>
+      <td>2</td>
+      <td>32.1</td>
+      <td>101.00</td>
+      <td>157</td>
+      <td>93.2</td>
+      <td>38.0</td>
+      <td>4.00</td>
+      <td>4.8598</td>
+      <td>87</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>48</td>
+      <td>1</td>
+      <td>21.6</td>
+      <td>87.00</td>
+      <td>183</td>
+      <td>103.2</td>
+      <td>70.0</td>
+      <td>3.00</td>
+      <td>3.8918</td>
+      <td>69</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>72</td>
+      <td>2</td>
+      <td>30.5</td>
+      <td>93.00</td>
+      <td>156</td>
+      <td>93.6</td>
+      <td>41.0</td>
+      <td>4.00</td>
+      <td>4.6728</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>24</td>
+      <td>1</td>
+      <td>25.3</td>
+      <td>84.00</td>
+      <td>198</td>
+      <td>131.4</td>
+      <td>40.0</td>
+      <td>5.00</td>
+      <td>4.8903</td>
+      <td>89</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>50</td>
+      <td>1</td>
+      <td>23.0</td>
+      <td>101.00</td>
+      <td>192</td>
+      <td>125.4</td>
+      <td>52.0</td>
+      <td>4.00</td>
+      <td>4.2905</td>
+      <td>80</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>437</th>
+      <td>60</td>
+      <td>2</td>
+      <td>28.2</td>
+      <td>112.00</td>
+      <td>185</td>
+      <td>113.8</td>
+      <td>42.0</td>
+      <td>4.00</td>
+      <td>4.9836</td>
+      <td>93</td>
+    </tr>
+    <tr>
+      <th>438</th>
+      <td>47</td>
+      <td>2</td>
+      <td>24.9</td>
+      <td>75.00</td>
+      <td>225</td>
+      <td>166.0</td>
+      <td>42.0</td>
+      <td>5.00</td>
+      <td>4.4427</td>
+      <td>102</td>
+    </tr>
+    <tr>
+      <th>439</th>
+      <td>60</td>
+      <td>2</td>
+      <td>24.9</td>
+      <td>99.67</td>
+      <td>162</td>
+      <td>106.6</td>
+      <td>43.0</td>
+      <td>3.77</td>
+      <td>4.1271</td>
+      <td>95</td>
+    </tr>
+    <tr>
+      <th>440</th>
+      <td>36</td>
+      <td>1</td>
+      <td>30.0</td>
+      <td>95.00</td>
+      <td>201</td>
+      <td>125.2</td>
+      <td>42.0</td>
+      <td>4.79</td>
+      <td>5.1299</td>
+      <td>85</td>
+    </tr>
+    <tr>
+      <th>441</th>
+      <td>36</td>
+      <td>1</td>
+      <td>19.6</td>
+      <td>71.00</td>
+      <td>250</td>
+      <td>133.2</td>
+      <td>97.0</td>
+      <td>3.00</td>
+      <td>4.5951</td>
+      <td>92</td>
+    </tr>
+  </tbody>
+</table>
+<p>442 rows × 10 columns</p>
+</div>
+
+
+
+
+```python
+#Y values
+Y = diabetes['Y']
+Y
+```
+
+
+
+
+    0      151
+    1       75
+    2      141
+    3      206
+    4      135
+          ... 
+    437    178
+    438    104
+    439    132
+    440    220
+    441     57
+    Name: Y, Length: 442, dtype: int64
+
+
+
+
+```python
+#train and test data split
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, train_size=0.8, random_state=42)
+```
+
+
+```python
+X_train.shape
+```
+
+
+
+
+    (353, 10)
+
+
+
+
+```python
+X_test.shape
+```
+
+
+
+
+    (89, 10)
+
+
+
+
+```python
+#create a dataframe for training set including target variables.
+diabetes_train = X_train.copy()
+diabetes_train['Y'] = Y_train
+diabetes_train = diabetes_train.reset_index(drop=True)
+
+#diabetes_train has both X_train and Y_train values.
+diabetes_train
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>68</td>
+      <td>2</td>
+      <td>27.5</td>
+      <td>111.0</td>
+      <td>214</td>
+      <td>147.0</td>
+      <td>39.0</td>
+      <td>5.0</td>
+      <td>4.9416</td>
+      <td>91</td>
+      <td>144</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>46</td>
+      <td>2</td>
+      <td>24.7</td>
+      <td>85.0</td>
+      <td>174</td>
+      <td>123.2</td>
+      <td>30.0</td>
+      <td>6.0</td>
+      <td>4.6444</td>
+      <td>96</td>
+      <td>150</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50</td>
+      <td>1</td>
+      <td>31.0</td>
+      <td>123.0</td>
+      <td>178</td>
+      <td>105.0</td>
+      <td>48.0</td>
+      <td>4.0</td>
+      <td>4.8283</td>
+      <td>88</td>
+      <td>280</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>41</td>
+      <td>1</td>
+      <td>23.1</td>
+      <td>86.0</td>
+      <td>148</td>
+      <td>78.0</td>
+      <td>58.0</td>
+      <td>3.0</td>
+      <td>4.0943</td>
+      <td>60</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>42</td>
+      <td>1</td>
+      <td>20.3</td>
+      <td>71.0</td>
+      <td>161</td>
+      <td>81.2</td>
+      <td>66.0</td>
+      <td>2.0</td>
+      <td>4.2341</td>
+      <td>81</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>22</td>
+      <td>1</td>
+      <td>19.3</td>
+      <td>82.0</td>
+      <td>156</td>
+      <td>93.2</td>
+      <td>52.0</td>
+      <td>3.0</td>
+      <td>3.9890</td>
+      <td>71</td>
+      <td>134</td>
+    </tr>
+    <tr>
+      <th>349</th>
+      <td>50</td>
+      <td>2</td>
+      <td>29.2</td>
+      <td>119.0</td>
+      <td>162</td>
+      <td>85.2</td>
+      <td>54.0</td>
+      <td>3.0</td>
+      <td>4.7362</td>
+      <td>95</td>
+      <td>202</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>57</td>
+      <td>1</td>
+      <td>24.5</td>
+      <td>93.0</td>
+      <td>186</td>
+      <td>96.6</td>
+      <td>71.0</td>
+      <td>3.0</td>
+      <td>4.5218</td>
+      <td>91</td>
+      <td>148</td>
+    </tr>
+    <tr>
+      <th>351</th>
+      <td>45</td>
+      <td>1</td>
+      <td>24.2</td>
+      <td>83.0</td>
+      <td>177</td>
+      <td>118.4</td>
+      <td>45.0</td>
+      <td>4.0</td>
+      <td>4.2195</td>
+      <td>82</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>23</td>
+      <td>1</td>
+      <td>29.0</td>
+      <td>90.0</td>
+      <td>216</td>
+      <td>131.4</td>
+      <td>65.0</td>
+      <td>3.0</td>
+      <td>4.5850</td>
+      <td>91</td>
+      <td>302</td>
+    </tr>
+  </tbody>
+</table>
+<p>353 rows × 11 columns</p>
+</div>
+
+
+
+
+```python
+#create a dataframe for test set including target variables.
+diabetes_test = X_test.copy()
+diabetes_test['Y'] = Y_test
+diabetes_test = diabetes_test.reset_index(drop=True)
+
+#diabetes_test has both X_test and Y_test values.
+diabetes_test
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>61</td>
+      <td>1</td>
+      <td>25.8</td>
+      <td>90.00</td>
+      <td>280</td>
+      <td>195.4</td>
+      <td>55.0</td>
+      <td>5.0</td>
+      <td>4.9972</td>
+      <td>90</td>
+      <td>219</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>74</td>
+      <td>1</td>
+      <td>29.8</td>
+      <td>101.00</td>
+      <td>171</td>
+      <td>104.8</td>
+      <td>50.0</td>
+      <td>3.0</td>
+      <td>4.3944</td>
+      <td>86</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>66</td>
+      <td>2</td>
+      <td>26.0</td>
+      <td>91.00</td>
+      <td>264</td>
+      <td>146.6</td>
+      <td>65.0</td>
+      <td>4.0</td>
+      <td>5.5683</td>
+      <td>87</td>
+      <td>202</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>75</td>
+      <td>1</td>
+      <td>31.2</td>
+      <td>117.67</td>
+      <td>229</td>
+      <td>138.8</td>
+      <td>29.0</td>
+      <td>7.9</td>
+      <td>5.7236</td>
+      <td>106</td>
+      <td>230</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>52</td>
+      <td>2</td>
+      <td>24.5</td>
+      <td>94.00</td>
+      <td>217</td>
+      <td>149.4</td>
+      <td>48.0</td>
+      <td>5.0</td>
+      <td>4.5850</td>
+      <td>89</td>
+      <td>111</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>49</td>
+      <td>1</td>
+      <td>20.3</td>
+      <td>93.00</td>
+      <td>184</td>
+      <td>103.0</td>
+      <td>61.0</td>
+      <td>3.0</td>
+      <td>4.6052</td>
+      <td>93</td>
+      <td>153</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>52</td>
+      <td>1</td>
+      <td>24.0</td>
+      <td>83.00</td>
+      <td>167</td>
+      <td>86.6</td>
+      <td>71.0</td>
+      <td>2.0</td>
+      <td>3.8501</td>
+      <td>94</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>41</td>
+      <td>1</td>
+      <td>20.5</td>
+      <td>80.00</td>
+      <td>124</td>
+      <td>48.8</td>
+      <td>64.0</td>
+      <td>2.0</td>
+      <td>4.0254</td>
+      <td>75</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>42</td>
+      <td>1</td>
+      <td>19.9</td>
+      <td>76.00</td>
+      <td>146</td>
+      <td>83.2</td>
+      <td>55.0</td>
+      <td>3.0</td>
+      <td>3.6636</td>
+      <td>79</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>31</td>
+      <td>1</td>
+      <td>29.7</td>
+      <td>88.00</td>
+      <td>167</td>
+      <td>103.4</td>
+      <td>48.0</td>
+      <td>4.0</td>
+      <td>4.3567</td>
+      <td>78</td>
+      <td>184</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 11 columns</p>
+</div>
+
+
+
+## 3. EDA and Visualizations
+
+Now we can take a look at a summary of each attribute.
+
+This includes the count, mean, the min and max values as well as some percentiles.
+
+
+```python
+# descriptions
+diabetes_desc = diabetes_train.describe()
+diabetes_desc
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>48.9150</td>
+      <td>1.4703</td>
+      <td>26.5368</td>
+      <td>94.9896</td>
+      <td>188.7365</td>
+      <td>114.9244</td>
+      <td>49.5198</td>
+      <td>4.0805</td>
+      <td>4.6548</td>
+      <td>91.7167</td>
+      <td>153.7365</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>12.7553</td>
+      <td>0.4998</td>
+      <td>4.3862</td>
+      <td>14.0781</td>
+      <td>34.7292</td>
+      <td>30.4208</td>
+      <td>12.7779</td>
+      <td>1.2951</td>
+      <td>0.5247</td>
+      <td>11.6801</td>
+      <td>78.0619</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>19.0000</td>
+      <td>1.0000</td>
+      <td>18.1000</td>
+      <td>62.0000</td>
+      <td>110.0000</td>
+      <td>41.6000</td>
+      <td>22.0000</td>
+      <td>2.0000</td>
+      <td>3.2581</td>
+      <td>58.0000</td>
+      <td>25.0000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>40.0000</td>
+      <td>1.0000</td>
+      <td>23.4000</td>
+      <td>84.0000</td>
+      <td>163.0000</td>
+      <td>94.6000</td>
+      <td>41.0000</td>
+      <td>3.0000</td>
+      <td>4.2767</td>
+      <td>84.0000</td>
+      <td>86.0000</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>51.0000</td>
+      <td>1.0000</td>
+      <td>25.9000</td>
+      <td>93.0000</td>
+      <td>186.0000</td>
+      <td>112.8000</td>
+      <td>48.0000</td>
+      <td>4.0000</td>
+      <td>4.6347</td>
+      <td>92.0000</td>
+      <td>142.0000</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>59.0000</td>
+      <td>2.0000</td>
+      <td>29.4000</td>
+      <td>105.0000</td>
+      <td>208.0000</td>
+      <td>132.8000</td>
+      <td>57.0000</td>
+      <td>5.0000</td>
+      <td>5.0106</td>
+      <td>99.0000</td>
+      <td>214.0000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>79.0000</td>
+      <td>2.0000</td>
+      <td>41.3000</td>
+      <td>133.0000</td>
+      <td>301.0000</td>
+      <td>242.4000</td>
+      <td>99.0000</td>
+      <td>9.0900</td>
+      <td>6.1070</td>
+      <td>124.0000</td>
+      <td>346.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Now we can take a look at the correlation matrix to summarize the correlations between all variables in the dataset. It's also important because it serves as a diagnostic for regression.
+
+
+```python
+#correlation matrix
+diabetes_train.corr()
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>AGE</th>
+      <td>1.000000</td>
+      <td>0.171161</td>
+      <td>0.184695</td>
+      <td>0.314569</td>
+      <td>0.270283</td>
+      <td>0.218952</td>
+      <td>-0.043783</td>
+      <td>0.180038</td>
+      <td>0.268422</td>
+      <td>0.281806</td>
+      <td>0.196510</td>
+    </tr>
+    <tr>
+      <th>SEX</th>
+      <td>0.171161</td>
+      <td>1.000000</td>
+      <td>0.033934</td>
+      <td>0.179283</td>
+      <td>0.021069</td>
+      <td>0.120205</td>
+      <td>-0.355094</td>
+      <td>0.320490</td>
+      <td>0.113187</td>
+      <td>0.165951</td>
+      <td>0.007116</td>
+    </tr>
+    <tr>
+      <th>BMI</th>
+      <td>0.184695</td>
+      <td>0.033934</td>
+      <td>1.000000</td>
+      <td>0.394309</td>
+      <td>0.266467</td>
+      <td>0.261560</td>
+      <td>-0.354655</td>
+      <td>0.430974</td>
+      <td>0.468473</td>
+      <td>0.404928</td>
+      <td>0.604751</td>
+    </tr>
+    <tr>
+      <th>BP</th>
+      <td>0.314569</td>
+      <td>0.179283</td>
+      <td>0.394309</td>
+      <td>1.000000</td>
+      <td>0.239978</td>
+      <td>0.161457</td>
+      <td>-0.120827</td>
+      <td>0.212785</td>
+      <td>0.375295</td>
+      <td>0.374647</td>
+      <td>0.444770</td>
+    </tr>
+    <tr>
+      <th>S1</th>
+      <td>0.270283</td>
+      <td>0.021069</td>
+      <td>0.266467</td>
+      <td>0.239978</td>
+      <td>1.000000</td>
+      <td>0.891063</td>
+      <td>0.053003</td>
+      <td>0.546840</td>
+      <td>0.528543</td>
+      <td>0.330773</td>
+      <td>0.199547</td>
+    </tr>
+    <tr>
+      <th>S2</th>
+      <td>0.218952</td>
+      <td>0.120205</td>
+      <td>0.261560</td>
+      <td>0.161457</td>
+      <td>0.891063</td>
+      <td>1.000000</td>
+      <td>-0.190658</td>
+      <td>0.654675</td>
+      <td>0.307139</td>
+      <td>0.293291</td>
+      <td>0.154922</td>
+    </tr>
+    <tr>
+      <th>S3</th>
+      <td>-0.043783</td>
+      <td>-0.355094</td>
+      <td>-0.354655</td>
+      <td>-0.120827</td>
+      <td>0.053003</td>
+      <td>-0.190658</td>
+      <td>1.000000</td>
+      <td>-0.736685</td>
+      <td>-0.372437</td>
+      <td>-0.288236</td>
+      <td>-0.384000</td>
+    </tr>
+    <tr>
+      <th>S4</th>
+      <td>0.180038</td>
+      <td>0.320490</td>
+      <td>0.430974</td>
+      <td>0.212785</td>
+      <td>0.546840</td>
+      <td>0.654675</td>
+      <td>-0.736685</td>
+      <td>1.000000</td>
+      <td>0.613472</td>
+      <td>0.431352</td>
+      <td>0.425094</td>
+    </tr>
+    <tr>
+      <th>S5</th>
+      <td>0.268422</td>
+      <td>0.113187</td>
+      <td>0.468473</td>
+      <td>0.375295</td>
+      <td>0.528543</td>
+      <td>0.307139</td>
+      <td>-0.372437</td>
+      <td>0.613472</td>
+      <td>1.000000</td>
+      <td>0.478967</td>
+      <td>0.552183</td>
+    </tr>
+    <tr>
+      <th>S6</th>
+      <td>0.281806</td>
+      <td>0.165951</td>
+      <td>0.404928</td>
+      <td>0.374647</td>
+      <td>0.330773</td>
+      <td>0.293291</td>
+      <td>-0.288236</td>
+      <td>0.431352</td>
+      <td>0.478967</td>
+      <td>1.000000</td>
+      <td>0.390363</td>
+    </tr>
+    <tr>
+      <th>Y</th>
+      <td>0.196510</td>
+      <td>0.007116</td>
+      <td>0.604751</td>
+      <td>0.444770</td>
+      <td>0.199547</td>
+      <td>0.154922</td>
+      <td>-0.384000</td>
+      <td>0.425094</td>
+      <td>0.552183</td>
+      <td>0.390363</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+Let's plot Correlation Matrix
+
+
+```python
+plt.rcParams["figure.figsize"] = (12,10) # Custom figure size in inches
+sns.heatmap(diabetes_train.corr(), annot =True)
+plt.title('Correlation Matrix')
+```
+
+
+
+
+    Text(0.5, 1.0, 'Correlation Matrix')
+
+
+
+
+    
+![png](Diabetes_files/Diabetes_29_1.png)
+    
+
+
+We now have a basic idea about the data. We need to extend that with some visualizations.
+
+### Histogram
+
+
+```python
+# histogram
+diabetes_train.hist(alpha=0.8, rwidth=0.9, figsize=[15,15])
+plt.show()
+```
+
+
+    
+![png](Diabetes_files/Diabetes_32_0.png)
+    
+
+
+### Scatter Plot
+
+
+```python
+# scatter plot matrix
+scatter_matrix(diabetes_train, figsize=[15,15])
+plt.show()
+```
+
+
+    
+![png](Diabetes_files/Diabetes_34_0.png)
+    
+
+
+### Seaborn pairplots
+
+
+```python
+sns.pairplot(diabetes_train, x_vars=['AGE', 'SEX', 'BMI', 'BP', 'S1'], y_vars=["Y"],
+             height=5, aspect=0.8, kind="reg", palette="muted",
+             plot_kws={'color':'blue', 'line_kws':{'color':'red'}})
+```
+
+
+
+
+    <seaborn.axisgrid.PairGrid at 0x21c90e52bb0>
+
+
+
+
+    
+![png](Diabetes_files/Diabetes_36_1.png)
+    
+
+
+
+```python
+sns.pairplot(diabetes_train, x_vars=['S2', 'S3', 'S4', 'S5', 'S6'], y_vars=["Y"],
+             height=5, aspect=0.8, kind="reg", palette="muted",
+             plot_kws={'color':'blue', 'line_kws':{'color':'red'}})
+```
+
+
+
+
+    <seaborn.axisgrid.PairGrid at 0x21c92db6e80>
+
+
+
+
+    
+![png](Diabetes_files/Diabetes_37_1.png)
+    
+
+
+### Box and whisker plots
+
+
+```python
+diabetes_train.plot(kind='box', subplots=True, layout=(4,3), sharex=False, sharey=False, figsize=[15,15])
+plt.show()
+```
+
+
+    
+![png](Diabetes_files/Diabetes_39_0.png)
+    
+
+
+###  Outliers and Feature Scaling
+
+The goal of applying Feature Scaling is to make sure features are on almost the same scale so that each feature is equally important and make it easier to process by most ML algorithms.
+
+Let's define a function to filter out the outliers.
+
+
+```python
+#filter out outliers with 1.5 IQR Rule
+def remove_outliers(data, cols):
+    for col in cols:
+        Q1 = data[col].quantile(0.25)
+        Q3 = data[col].quantile(0.75)
+        IQR = Q3 - Q1    #IQR is interquartile range. 
+
+        filter = (data[col] >= Q1 - 1.5 * IQR) & (data[col] <= Q3 + 1.5 *IQR)
+        data = data.loc[filter]
+    return data
+```
+
+
+```python
+diabetes_new = remove_outliers(diabetes_train, ['BMI', 'S1', 'S2', 'S3', 'S4', 'S6'])
+
+outliers_size = diabetes_train.shape[0] - diabetes_new.shape[0]
+outliers_percent = outliers_size*100/diabetes_train.shape[0]
+
+print('The number of outliers removed is:',outliers_size, '\nThat is',round(outliers_percent,2), '% of the data.')
+```
+
+    The number of outliers removed is: 30 
+    That is 8.5 % of the data.
+    
+
+This is too many data points. Let's define another function to decide outliers. This time, we will use 68-95-99.7 rule for the Normal Distribution.
+
+![68_95_99_rule2.png](attachment:68_95_99_rule2.png)
+
+68% of the data is within 1 standard deviation, 95% is within 2 standard deviation, 99.7% is within 3 standard deviations.
+
+Depending on the number of data we have, if there are data points beyond 2 or 3 standard deviation, we might assume that they are outliers. But let's scale our data first!
+
+### Min-Max Scaling (Normalization)
+
+This will scale our all data points between 0 and 1.
+
+
+```python
+normal = MinMaxScaler()
+diabetes_train_normal = normal.fit_transform(diabetes_train)
+diabetes_train_normal = pd.DataFrame(diabetes_train_normal, columns = diabetes_train.columns)
+diabetes_train_normal
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.8167</td>
+      <td>1.0000</td>
+      <td>0.4052</td>
+      <td>0.6901</td>
+      <td>0.5445</td>
+      <td>0.5249</td>
+      <td>0.2208</td>
+      <td>0.4231</td>
+      <td>0.5909</td>
+      <td>0.5000</td>
+      <td>0.3707</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.4500</td>
+      <td>1.0000</td>
+      <td>0.2845</td>
+      <td>0.3239</td>
+      <td>0.3351</td>
+      <td>0.4064</td>
+      <td>0.1039</td>
+      <td>0.5642</td>
+      <td>0.4866</td>
+      <td>0.5758</td>
+      <td>0.3894</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.5167</td>
+      <td>0.0000</td>
+      <td>0.5560</td>
+      <td>0.8592</td>
+      <td>0.3560</td>
+      <td>0.3157</td>
+      <td>0.3377</td>
+      <td>0.2821</td>
+      <td>0.5512</td>
+      <td>0.4545</td>
+      <td>0.7944</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.3667</td>
+      <td>0.0000</td>
+      <td>0.2155</td>
+      <td>0.3380</td>
+      <td>0.1990</td>
+      <td>0.1813</td>
+      <td>0.4675</td>
+      <td>0.1410</td>
+      <td>0.2935</td>
+      <td>0.0303</td>
+      <td>0.3115</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.3833</td>
+      <td>0.0000</td>
+      <td>0.0948</td>
+      <td>0.1268</td>
+      <td>0.2670</td>
+      <td>0.1972</td>
+      <td>0.5714</td>
+      <td>0.0000</td>
+      <td>0.3426</td>
+      <td>0.3485</td>
+      <td>0.1059</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>0.0500</td>
+      <td>0.0000</td>
+      <td>0.0517</td>
+      <td>0.2817</td>
+      <td>0.2408</td>
+      <td>0.2570</td>
+      <td>0.3896</td>
+      <td>0.1410</td>
+      <td>0.2566</td>
+      <td>0.1970</td>
+      <td>0.3396</td>
+    </tr>
+    <tr>
+      <th>349</th>
+      <td>0.5167</td>
+      <td>1.0000</td>
+      <td>0.4784</td>
+      <td>0.8028</td>
+      <td>0.2723</td>
+      <td>0.2171</td>
+      <td>0.4156</td>
+      <td>0.1410</td>
+      <td>0.5188</td>
+      <td>0.5606</td>
+      <td>0.5514</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>0.6333</td>
+      <td>0.0000</td>
+      <td>0.2759</td>
+      <td>0.4366</td>
+      <td>0.3979</td>
+      <td>0.2739</td>
+      <td>0.6364</td>
+      <td>0.1410</td>
+      <td>0.4436</td>
+      <td>0.5000</td>
+      <td>0.3832</td>
+    </tr>
+    <tr>
+      <th>351</th>
+      <td>0.4333</td>
+      <td>0.0000</td>
+      <td>0.2629</td>
+      <td>0.2958</td>
+      <td>0.3508</td>
+      <td>0.3825</td>
+      <td>0.2987</td>
+      <td>0.2821</td>
+      <td>0.3375</td>
+      <td>0.3636</td>
+      <td>0.1215</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>0.0667</td>
+      <td>0.0000</td>
+      <td>0.4698</td>
+      <td>0.3944</td>
+      <td>0.5550</td>
+      <td>0.4472</td>
+      <td>0.5584</td>
+      <td>0.1410</td>
+      <td>0.4658</td>
+      <td>0.5000</td>
+      <td>0.8629</td>
+    </tr>
+  </tbody>
+</table>
+<p>353 rows × 11 columns</p>
+</div>
+
+
+
+
+```python
+# Using the “trained” scaler from the training data to scale the test data
+diabetes_test_normal = normal.transform(diabetes_test)
+diabetes_test_normal = pd.DataFrame(diabetes_test_normal, columns = diabetes_test.columns)
+diabetes_test_normal
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.7000</td>
+      <td>0.0000</td>
+      <td>0.3319</td>
+      <td>0.3944</td>
+      <td>0.8901</td>
+      <td>0.7659</td>
+      <td>0.4286</td>
+      <td>0.4231</td>
+      <td>0.6104</td>
+      <td>0.4848</td>
+      <td>0.6044</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.9167</td>
+      <td>0.0000</td>
+      <td>0.5043</td>
+      <td>0.5493</td>
+      <td>0.3194</td>
+      <td>0.3147</td>
+      <td>0.3636</td>
+      <td>0.1410</td>
+      <td>0.3989</td>
+      <td>0.4242</td>
+      <td>0.1402</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.7833</td>
+      <td>1.0000</td>
+      <td>0.3405</td>
+      <td>0.4085</td>
+      <td>0.8063</td>
+      <td>0.5229</td>
+      <td>0.5584</td>
+      <td>0.2821</td>
+      <td>0.8109</td>
+      <td>0.4394</td>
+      <td>0.5514</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.9333</td>
+      <td>0.0000</td>
+      <td>0.5647</td>
+      <td>0.7841</td>
+      <td>0.6230</td>
+      <td>0.4841</td>
+      <td>0.0909</td>
+      <td>0.8322</td>
+      <td>0.8654</td>
+      <td>0.7273</td>
+      <td>0.6386</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.5500</td>
+      <td>1.0000</td>
+      <td>0.2759</td>
+      <td>0.4507</td>
+      <td>0.5602</td>
+      <td>0.5369</td>
+      <td>0.3377</td>
+      <td>0.4231</td>
+      <td>0.4658</td>
+      <td>0.4697</td>
+      <td>0.2679</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>0.5000</td>
+      <td>0.0000</td>
+      <td>0.0948</td>
+      <td>0.4366</td>
+      <td>0.3874</td>
+      <td>0.3058</td>
+      <td>0.5065</td>
+      <td>0.1410</td>
+      <td>0.4728</td>
+      <td>0.5303</td>
+      <td>0.3988</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>0.5500</td>
+      <td>0.0000</td>
+      <td>0.2543</td>
+      <td>0.2958</td>
+      <td>0.2984</td>
+      <td>0.2241</td>
+      <td>0.6364</td>
+      <td>0.0000</td>
+      <td>0.2078</td>
+      <td>0.5455</td>
+      <td>0.2274</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>0.3667</td>
+      <td>0.0000</td>
+      <td>0.1034</td>
+      <td>0.2535</td>
+      <td>0.0733</td>
+      <td>0.0359</td>
+      <td>0.5455</td>
+      <td>0.0000</td>
+      <td>0.2693</td>
+      <td>0.2576</td>
+      <td>0.0374</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>0.3833</td>
+      <td>0.0000</td>
+      <td>0.0776</td>
+      <td>0.1972</td>
+      <td>0.1885</td>
+      <td>0.2072</td>
+      <td>0.4286</td>
+      <td>0.1410</td>
+      <td>0.1423</td>
+      <td>0.3182</td>
+      <td>0.1184</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>0.2000</td>
+      <td>0.0000</td>
+      <td>0.5000</td>
+      <td>0.3662</td>
+      <td>0.2984</td>
+      <td>0.3078</td>
+      <td>0.3377</td>
+      <td>0.2821</td>
+      <td>0.3856</td>
+      <td>0.3030</td>
+      <td>0.4953</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 11 columns</p>
+</div>
+
+
+
+#### Outliers
+
+
+```python
+diabetes_train_normal_des = diabetes_train_normal.describe()
+diabetes_train_normal_des
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>0.4986</td>
+      <td>0.4703</td>
+      <td>0.3637</td>
+      <td>0.4646</td>
+      <td>0.4122</td>
+      <td>0.3652</td>
+      <td>0.3574</td>
+      <td>0.2934</td>
+      <td>0.4902</td>
+      <td>0.5109</td>
+      <td>0.4010</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>0.2126</td>
+      <td>0.4998</td>
+      <td>0.1891</td>
+      <td>0.1983</td>
+      <td>0.1818</td>
+      <td>0.1515</td>
+      <td>0.1659</td>
+      <td>0.1827</td>
+      <td>0.1842</td>
+      <td>0.1770</td>
+      <td>0.2432</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>0.3500</td>
+      <td>0.0000</td>
+      <td>0.2284</td>
+      <td>0.3099</td>
+      <td>0.2775</td>
+      <td>0.2639</td>
+      <td>0.2468</td>
+      <td>0.1410</td>
+      <td>0.3575</td>
+      <td>0.3939</td>
+      <td>0.1900</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.5333</td>
+      <td>0.0000</td>
+      <td>0.3362</td>
+      <td>0.4366</td>
+      <td>0.3979</td>
+      <td>0.3546</td>
+      <td>0.3377</td>
+      <td>0.2821</td>
+      <td>0.4832</td>
+      <td>0.5152</td>
+      <td>0.3645</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.6667</td>
+      <td>1.0000</td>
+      <td>0.4871</td>
+      <td>0.6056</td>
+      <td>0.5131</td>
+      <td>0.4542</td>
+      <td>0.4545</td>
+      <td>0.4231</td>
+      <td>0.6151</td>
+      <td>0.6212</td>
+      <td>0.5888</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Another function to define outliers based on the rule above.
+
+
+```python
+def find_outliers(datafrm, coef):
+    outliers = []
+    for i in range(0,10):
+        mu = datafrm.iloc[1,i]
+        std = datafrm.iloc[2,i]
+        minm = datafrm.iloc[3,i]
+        maxm = datafrm.iloc[7,i]
+        
+        outliers.append(datafrm.columns[i])
+
+        outlier1 = mu - coef*std
+        outlier2 = mu + coef*std
+
+        if outlier1 > minm:
+            outliers.append(outlier1)
+        else:
+            outliers.append(0)
+
+        if outlier2 < maxm:
+            outliers.append(outlier2)
+        else:
+            outliers.append(0)
+    return outliers
+```
+
+
+```python
+find_outliers(diabetes_train_normal_des,3)
+```
+
+
+
+
+    ['AGE',
+     0,
+     0,
+     'SEX',
+     0,
+     0,
+     'BMI',
+     0,
+     0.9308407749504163,
+     'BP',
+     0,
+     0,
+     'S1',
+     0,
+     0.9577188002352092,
+     'S2',
+     0,
+     0.8196558653965049,
+     'S3',
+     0,
+     0.8552413287892872,
+     'S4',
+     0,
+     0.8414243289535066,
+     'S5',
+     0,
+     0,
+     'S6',
+     0,
+     0]
+
+
+
+
+```python
+diabetes_train_normal_clean = diabetes_train_normal.copy()
+```
+
+
+```python
+diabetes_train_normal_clean = diabetes_train_normal_clean.loc[diabetes_train_normal_clean['BMI']<=0.931]
+diabetes_train_normal_clean = diabetes_train_normal_clean.loc[diabetes_train_normal_clean['S1']<=0.958]
+diabetes_train_normal_clean = diabetes_train_normal_clean.loc[diabetes_train_normal_clean['S2']<=0.82]
+diabetes_train_normal_clean = diabetes_train_normal_clean.loc[diabetes_train_normal_clean['S3']<=0.856]
+diabetes_train_normal_clean = diabetes_train_normal_clean.loc[diabetes_train_normal_clean['S4']<=0.842]
+```
+
+
+```python
+outliers_size = diabetes_train.shape[0] - diabetes_train_normal_clean.shape[0]
+outliers_percent = outliers_size*100/diabetes_train.shape[0]
+
+print('The number of outliers removed is:',outliers_size, '\nThat is',round(outliers_percent,2), '% of the data.')
+```
+
+    The number of outliers removed is: 11 
+    That is 3.12 % of the data.
+    
+
+### Standardization (Z-score normalization)
+
+Remove mean and divide by stdev to scale the data so that it has the 0 mean and 1 stdev.
+
+
+```python
+# Training Data
+standard = StandardScaler()
+diabetes_train_standard = standard.fit_transform(diabetes_train)
+diabetes_train_standard = pd.DataFrame(diabetes_train_standard, columns = diabetes_train.columns)
+diabetes_train_standard
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1.4984</td>
+      <td>1.0614</td>
+      <td>0.2199</td>
+      <td>1.1389</td>
+      <td>0.7285</td>
+      <td>1.0559</td>
+      <td>-0.8245</td>
+      <td>0.7110</td>
+      <td>0.5475</td>
+      <td>-0.0614</td>
+      <td>-0.1249</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-0.2289</td>
+      <td>1.0614</td>
+      <td>-0.4194</td>
+      <td>-0.7106</td>
+      <td>-0.4249</td>
+      <td>0.2724</td>
+      <td>-1.5298</td>
+      <td>1.4843</td>
+      <td>-0.0198</td>
+      <td>0.3672</td>
+      <td>-0.0479</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0852</td>
+      <td>-0.9422</td>
+      <td>1.0190</td>
+      <td>1.9925</td>
+      <td>-0.3096</td>
+      <td>-0.3267</td>
+      <td>-0.1191</td>
+      <td>-0.0622</td>
+      <td>0.3312</td>
+      <td>-0.3187</td>
+      <td>1.6198</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-0.6214</td>
+      <td>-0.9422</td>
+      <td>-0.7847</td>
+      <td>-0.6395</td>
+      <td>-1.1746</td>
+      <td>-1.2155</td>
+      <td>0.6646</td>
+      <td>-0.8355</td>
+      <td>-1.0697</td>
+      <td>-2.7193</td>
+      <td>-0.3686</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.5429</td>
+      <td>-0.9422</td>
+      <td>-1.4239</td>
+      <td>-1.7065</td>
+      <td>-0.7998</td>
+      <td>-1.1102</td>
+      <td>1.2916</td>
+      <td>-1.6087</td>
+      <td>-0.8029</td>
+      <td>-0.9188</td>
+      <td>-1.2153</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>-2.1131</td>
+      <td>-0.9422</td>
+      <td>-1.6522</td>
+      <td>-0.9240</td>
+      <td>-0.9440</td>
+      <td>-0.7151</td>
+      <td>0.1944</td>
+      <td>-0.8355</td>
+      <td>-1.2707</td>
+      <td>-1.7762</td>
+      <td>-0.2532</td>
+    </tr>
+    <tr>
+      <th>349</th>
+      <td>0.0852</td>
+      <td>1.0614</td>
+      <td>0.6080</td>
+      <td>1.7079</td>
+      <td>-0.7709</td>
+      <td>-0.9785</td>
+      <td>0.3511</td>
+      <td>-0.8355</td>
+      <td>0.1555</td>
+      <td>0.2815</td>
+      <td>0.6191</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>0.6348</td>
+      <td>-0.9422</td>
+      <td>-0.4650</td>
+      <td>-0.1415</td>
+      <td>-0.0789</td>
+      <td>-0.6032</td>
+      <td>1.6834</td>
+      <td>-0.8355</td>
+      <td>-0.2538</td>
+      <td>-0.0614</td>
+      <td>-0.0736</td>
+    </tr>
+    <tr>
+      <th>351</th>
+      <td>-0.3074</td>
+      <td>-0.9422</td>
+      <td>-0.5335</td>
+      <td>-0.8529</td>
+      <td>-0.3384</td>
+      <td>0.1144</td>
+      <td>-0.3542</td>
+      <td>-0.0622</td>
+      <td>-0.8307</td>
+      <td>-0.8331</td>
+      <td>-1.1512</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>-2.0346</td>
+      <td>-0.9422</td>
+      <td>0.5624</td>
+      <td>-0.3549</td>
+      <td>0.7861</td>
+      <td>0.5424</td>
+      <td>1.2132</td>
+      <td>-0.8355</td>
+      <td>-0.1331</td>
+      <td>-0.0614</td>
+      <td>1.9020</td>
+    </tr>
+  </tbody>
+</table>
+<p>353 rows × 11 columns</p>
+</div>
+
+
+
+We need to use the mean and variance from the trainset to standardize the testset.
+
+
+```python
+# Using the “trained” scaler from the training data to scale the test data
+diabetes_test_standard = standard.transform(diabetes_test)
+diabetes_test_standard = pd.DataFrame(diabetes_test_standard, columns = diabetes_test.columns)
+diabetes_test_standard
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.9488</td>
+      <td>-0.9422</td>
+      <td>-0.1682</td>
+      <td>-0.3549</td>
+      <td>2.6316</td>
+      <td>2.6492</td>
+      <td>0.4295</td>
+      <td>0.7110</td>
+      <td>0.6536</td>
+      <td>-0.1472</td>
+      <td>0.8372</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.9694</td>
+      <td>-0.9422</td>
+      <td>0.7450</td>
+      <td>0.4275</td>
+      <td>-0.5114</td>
+      <td>-0.3333</td>
+      <td>0.0376</td>
+      <td>-0.8355</td>
+      <td>-0.4969</td>
+      <td>-0.4901</td>
+      <td>-1.0742</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>1.3413</td>
+      <td>1.0614</td>
+      <td>-0.1226</td>
+      <td>-0.2838</td>
+      <td>2.1702</td>
+      <td>1.0427</td>
+      <td>1.2132</td>
+      <td>-0.0622</td>
+      <td>1.7436</td>
+      <td>-0.4044</td>
+      <td>0.6191</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2.0479</td>
+      <td>-0.9422</td>
+      <td>1.0646</td>
+      <td>1.6133</td>
+      <td>1.1610</td>
+      <td>0.7860</td>
+      <td>-1.6082</td>
+      <td>2.9535</td>
+      <td>2.0400</td>
+      <td>1.2246</td>
+      <td>0.9783</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.2422</td>
+      <td>1.0614</td>
+      <td>-0.4650</td>
+      <td>-0.0704</td>
+      <td>0.8150</td>
+      <td>1.1349</td>
+      <td>-0.1191</td>
+      <td>0.7110</td>
+      <td>-0.1331</td>
+      <td>-0.2329</td>
+      <td>-0.5482</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>0.0067</td>
+      <td>-0.9422</td>
+      <td>-1.4239</td>
+      <td>-0.1415</td>
+      <td>-0.1366</td>
+      <td>-0.3925</td>
+      <td>0.8997</td>
+      <td>-0.8355</td>
+      <td>-0.0946</td>
+      <td>0.1100</td>
+      <td>-0.0094</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>0.2422</td>
+      <td>-0.9422</td>
+      <td>-0.5792</td>
+      <td>-0.8529</td>
+      <td>-0.6268</td>
+      <td>-0.9324</td>
+      <td>1.6834</td>
+      <td>-1.6087</td>
+      <td>-1.5358</td>
+      <td>0.1958</td>
+      <td>-0.7150</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>-0.6214</td>
+      <td>-0.9422</td>
+      <td>-1.3783</td>
+      <td>-1.0663</td>
+      <td>-1.8667</td>
+      <td>-2.1767</td>
+      <td>1.1348</td>
+      <td>-1.6087</td>
+      <td>-1.2012</td>
+      <td>-1.4332</td>
+      <td>-1.4976</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>-0.5429</td>
+      <td>-0.9422</td>
+      <td>-1.5153</td>
+      <td>-1.3508</td>
+      <td>-1.2323</td>
+      <td>-1.0443</td>
+      <td>0.4295</td>
+      <td>-0.8355</td>
+      <td>-1.8917</td>
+      <td>-1.0903</td>
+      <td>-1.1640</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>-1.4065</td>
+      <td>-0.9422</td>
+      <td>0.7222</td>
+      <td>-0.4972</td>
+      <td>-0.6268</td>
+      <td>-0.3794</td>
+      <td>-0.1191</td>
+      <td>-0.0622</td>
+      <td>-0.5689</td>
+      <td>-1.1760</td>
+      <td>0.3882</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 11 columns</p>
+</div>
+
+
+
+#### Outliers
+
+
+```python
+diabetes_train_standard_desc = diabetes_train_standard.describe()
+diabetes_train_standard_desc
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>-0.0000</td>
+      <td>-0.0000</td>
+      <td>0.0000</td>
+      <td>-0.0000</td>
+      <td>-0.0000</td>
+      <td>0.0000</td>
+      <td>-0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>0.0000</td>
+      <td>-0.0000</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+      <td>1.0014</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>-2.3486</td>
+      <td>-0.9422</td>
+      <td>-1.9262</td>
+      <td>-2.3467</td>
+      <td>-2.2704</td>
+      <td>-2.4138</td>
+      <td>-2.1568</td>
+      <td>-1.6087</td>
+      <td>-2.6657</td>
+      <td>-2.8908</td>
+      <td>-1.6515</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>-0.6999</td>
+      <td>-0.9422</td>
+      <td>-0.7162</td>
+      <td>-0.7817</td>
+      <td>-0.7421</td>
+      <td>-0.6691</td>
+      <td>-0.6677</td>
+      <td>-0.8355</td>
+      <td>-0.7216</td>
+      <td>-0.6616</td>
+      <td>-0.8690</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>0.1637</td>
+      <td>-0.9422</td>
+      <td>-0.1454</td>
+      <td>-0.1415</td>
+      <td>-0.0789</td>
+      <td>-0.0699</td>
+      <td>-0.1191</td>
+      <td>-0.0622</td>
+      <td>-0.0383</td>
+      <td>0.0243</td>
+      <td>-0.1506</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>0.7918</td>
+      <td>1.0614</td>
+      <td>0.6537</td>
+      <td>0.7121</td>
+      <td>0.5555</td>
+      <td>0.5884</td>
+      <td>0.5862</td>
+      <td>0.7110</td>
+      <td>0.6792</td>
+      <td>0.6244</td>
+      <td>0.7731</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>2.3620</td>
+      <td>1.0614</td>
+      <td>3.3706</td>
+      <td>2.7038</td>
+      <td>3.2371</td>
+      <td>4.1964</td>
+      <td>3.8778</td>
+      <td>3.8736</td>
+      <td>2.7718</td>
+      <td>2.7679</td>
+      <td>2.4665</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+find_outliers(diabetes_train_standard_desc,3)
+```
+
+
+
+
+    ['AGE',
+     0,
+     0,
+     'SEX',
+     0,
+     0,
+     'BMI',
+     0,
+     3.0042583413911292,
+     'BP',
+     0,
+     0,
+     'S1',
+     0,
+     3.0042583413911284,
+     'S2',
+     0,
+     3.00425834139113,
+     'S3',
+     0,
+     3.0042583413911284,
+     'S4',
+     0,
+     3.004258341391129,
+     'S5',
+     0,
+     0,
+     'S6',
+     0,
+     0]
+
+
+
+
+```python
+diabetes_train_standard_clean = diabetes_train_standard.copy()
+```
+
+
+```python
+diabetes_train_standard_clean = diabetes_train_standard_clean.loc[diabetes_train_standard_clean['BMI']<=3.0043]
+diabetes_train_standard_clean = diabetes_train_standard_clean.loc[diabetes_train_standard_clean['S1']<=3.0043]
+diabetes_train_standard_clean = diabetes_train_standard_clean.loc[diabetes_train_standard_clean['S2']<=3.0043]
+diabetes_train_standard_clean = diabetes_train_standard_clean.loc[diabetes_train_standard_clean['S3']<=3.0043]
+diabetes_train_standard_clean = diabetes_train_standard_clean.loc[diabetes_train_standard_clean['S4']<=3.0043]
+```
+
+
+```python
+outliers_size = diabetes_train.shape[0] - diabetes_train_standard_clean.shape[0]
+outliers_percent = outliers_size*100/diabetes_train.shape[0]
+
+print('The number of outliers removed is:',outliers_size, '\nThat is',round(outliers_percent,2), '% of the data.')
+```
+
+    The number of outliers removed is: 11 
+    That is 3.12 % of the data.
+    
+
+### Box-Cox Power Transformation
+
+A Box Cox transformation is a transformation of non-normal dependent variables into a normal shape. Normality is an important assumption for many statistical techniques; if the data does not follow Normal (Gaussian) Distribution, applying a Box-Cox means that we are able to run a broader number of tests.
+
+![boxcox.png](attachment:boxcox.png)
+
+
+```python
+from scipy.stats import boxcox
+```
+
+
+```python
+diabetes_train_bxcx = diabetes_train.copy()
+diabetes_train_bxcx
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>68</td>
+      <td>2</td>
+      <td>27.5000</td>
+      <td>111.0000</td>
+      <td>214</td>
+      <td>147.0000</td>
+      <td>39.0000</td>
+      <td>5.0000</td>
+      <td>4.9416</td>
+      <td>91</td>
+      <td>144</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>46</td>
+      <td>2</td>
+      <td>24.7000</td>
+      <td>85.0000</td>
+      <td>174</td>
+      <td>123.2000</td>
+      <td>30.0000</td>
+      <td>6.0000</td>
+      <td>4.6444</td>
+      <td>96</td>
+      <td>150</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>50</td>
+      <td>1</td>
+      <td>31.0000</td>
+      <td>123.0000</td>
+      <td>178</td>
+      <td>105.0000</td>
+      <td>48.0000</td>
+      <td>4.0000</td>
+      <td>4.8283</td>
+      <td>88</td>
+      <td>280</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>41</td>
+      <td>1</td>
+      <td>23.1000</td>
+      <td>86.0000</td>
+      <td>148</td>
+      <td>78.0000</td>
+      <td>58.0000</td>
+      <td>3.0000</td>
+      <td>4.0943</td>
+      <td>60</td>
+      <td>125</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>42</td>
+      <td>1</td>
+      <td>20.3000</td>
+      <td>71.0000</td>
+      <td>161</td>
+      <td>81.2000</td>
+      <td>66.0000</td>
+      <td>2.0000</td>
+      <td>4.2341</td>
+      <td>81</td>
+      <td>59</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>22</td>
+      <td>1</td>
+      <td>19.3000</td>
+      <td>82.0000</td>
+      <td>156</td>
+      <td>93.2000</td>
+      <td>52.0000</td>
+      <td>3.0000</td>
+      <td>3.9890</td>
+      <td>71</td>
+      <td>134</td>
+    </tr>
+    <tr>
+      <th>349</th>
+      <td>50</td>
+      <td>2</td>
+      <td>29.2000</td>
+      <td>119.0000</td>
+      <td>162</td>
+      <td>85.2000</td>
+      <td>54.0000</td>
+      <td>3.0000</td>
+      <td>4.7362</td>
+      <td>95</td>
+      <td>202</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>57</td>
+      <td>1</td>
+      <td>24.5000</td>
+      <td>93.0000</td>
+      <td>186</td>
+      <td>96.6000</td>
+      <td>71.0000</td>
+      <td>3.0000</td>
+      <td>4.5218</td>
+      <td>91</td>
+      <td>148</td>
+    </tr>
+    <tr>
+      <th>351</th>
+      <td>45</td>
+      <td>1</td>
+      <td>24.2000</td>
+      <td>83.0000</td>
+      <td>177</td>
+      <td>118.4000</td>
+      <td>45.0000</td>
+      <td>4.0000</td>
+      <td>4.2195</td>
+      <td>82</td>
+      <td>64</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>23</td>
+      <td>1</td>
+      <td>29.0000</td>
+      <td>90.0000</td>
+      <td>216</td>
+      <td>131.4000</td>
+      <td>65.0000</td>
+      <td>3.0000</td>
+      <td>4.5850</td>
+      <td>91</td>
+      <td>302</td>
+    </tr>
+  </tbody>
+</table>
+<p>353 rows × 11 columns</p>
+</div>
+
+
+
+
+```python
+diabetes_test_bxcx = diabetes_test.copy()
+diabetes_test_bxcx
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>61</td>
+      <td>1</td>
+      <td>25.8000</td>
+      <td>90.0000</td>
+      <td>280</td>
+      <td>195.4000</td>
+      <td>55.0000</td>
+      <td>5.0000</td>
+      <td>4.9972</td>
+      <td>90</td>
+      <td>219</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>74</td>
+      <td>1</td>
+      <td>29.8000</td>
+      <td>101.0000</td>
+      <td>171</td>
+      <td>104.8000</td>
+      <td>50.0000</td>
+      <td>3.0000</td>
+      <td>4.3944</td>
+      <td>86</td>
+      <td>70</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>66</td>
+      <td>2</td>
+      <td>26.0000</td>
+      <td>91.0000</td>
+      <td>264</td>
+      <td>146.6000</td>
+      <td>65.0000</td>
+      <td>4.0000</td>
+      <td>5.5683</td>
+      <td>87</td>
+      <td>202</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>75</td>
+      <td>1</td>
+      <td>31.2000</td>
+      <td>117.6700</td>
+      <td>229</td>
+      <td>138.8000</td>
+      <td>29.0000</td>
+      <td>7.9000</td>
+      <td>5.7236</td>
+      <td>106</td>
+      <td>230</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>52</td>
+      <td>2</td>
+      <td>24.5000</td>
+      <td>94.0000</td>
+      <td>217</td>
+      <td>149.4000</td>
+      <td>48.0000</td>
+      <td>5.0000</td>
+      <td>4.5850</td>
+      <td>89</td>
+      <td>111</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>49</td>
+      <td>1</td>
+      <td>20.3000</td>
+      <td>93.0000</td>
+      <td>184</td>
+      <td>103.0000</td>
+      <td>61.0000</td>
+      <td>3.0000</td>
+      <td>4.6052</td>
+      <td>93</td>
+      <td>153</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>52</td>
+      <td>1</td>
+      <td>24.0000</td>
+      <td>83.0000</td>
+      <td>167</td>
+      <td>86.6000</td>
+      <td>71.0000</td>
+      <td>2.0000</td>
+      <td>3.8501</td>
+      <td>94</td>
+      <td>98</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>41</td>
+      <td>1</td>
+      <td>20.5000</td>
+      <td>80.0000</td>
+      <td>124</td>
+      <td>48.8000</td>
+      <td>64.0000</td>
+      <td>2.0000</td>
+      <td>4.0254</td>
+      <td>75</td>
+      <td>37</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>42</td>
+      <td>1</td>
+      <td>19.9000</td>
+      <td>76.0000</td>
+      <td>146</td>
+      <td>83.2000</td>
+      <td>55.0000</td>
+      <td>3.0000</td>
+      <td>3.6636</td>
+      <td>79</td>
+      <td>63</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>31</td>
+      <td>1</td>
+      <td>29.7000</td>
+      <td>88.0000</td>
+      <td>167</td>
+      <td>103.4000</td>
+      <td>48.0000</td>
+      <td>4.0000</td>
+      <td>4.3567</td>
+      <td>78</td>
+      <td>184</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 11 columns</p>
+</div>
+
+
+
+
+```python
+#perform Box-Cox transformation
+
+for c in list(diabetes_train.columns.values):
+    transformed_data, best_lambda = boxcox(diabetes_train[c])     
+    diabetes_train_bxcx[c] = transformed_data
+    
+    # use lambda value above to transform test data
+    test_data = boxcox(diabetes_test[c], best_lambda)
+    diabetes_test_bxcx[c] = test_data
+    
+diabetes_train_bxcx
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>240.7613</td>
+      <td>0.5827</td>
+      <td>1.6755</td>
+      <td>6.6905</td>
+      <td>11.3559</td>
+      <td>18.8808</td>
+      <td>3.2065</td>
+      <td>1.6631</td>
+      <td>1.5115</td>
+      <td>30.0312</td>
+      <td>13.1430</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>140.3061</td>
+      <td>0.5827</td>
+      <td>1.6524</td>
+      <td>6.1810</td>
+      <td>10.5783</td>
+      <td>17.2631</td>
+      <td>3.0048</td>
+      <td>1.8585</td>
+      <td>1.4559</td>
+      <td>31.1965</td>
+      <td>13.3697</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>157.4518</td>
+      <td>0.0000</td>
+      <td>1.6999</td>
+      <td>6.8916</td>
+      <td>10.6617</td>
+      <td>15.9063</td>
+      <td>3.3634</td>
+      <td>1.4260</td>
+      <td>1.4907</td>
+      <td>29.3222</td>
+      <td>17.2639</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>119.6539</td>
+      <td>0.0000</td>
+      <td>1.6374</td>
+      <td>6.2029</td>
+      <td>9.9977</td>
+      <td>13.6295</td>
+      <td>3.5043</td>
+      <td>1.1235</td>
+      <td>1.3422</td>
+      <td>22.2702</td>
+      <td>12.3811</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>123.7124</td>
+      <td>0.0000</td>
+      <td>1.6072</td>
+      <td>5.8481</td>
+      <td>10.2968</td>
+      <td>13.9198</td>
+      <td>3.5993</td>
+      <td>0.7030</td>
+      <td>1.3726</td>
+      <td>27.6369</td>
+      <td>8.9041</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>348</th>
+      <td>50.3876</td>
+      <td>0.0000</td>
+      <td>1.5948</td>
+      <td>6.1138</td>
+      <td>10.1840</td>
+      <td>14.9563</td>
+      <td>3.4232</td>
+      <td>1.1235</td>
+      <td>1.3186</td>
+      <td>25.1454</td>
+      <td>12.7508</td>
+    </tr>
+    <tr>
+      <th>349</th>
+      <td>157.4518</td>
+      <td>0.5827</td>
+      <td>1.6879</td>
+      <td>6.8265</td>
+      <td>10.3190</td>
+      <td>14.2741</td>
+      <td>3.4513</td>
+      <td>1.1235</td>
+      <td>1.4735</td>
+      <td>30.9651</td>
+      <td>15.1228</td>
+    </tr>
+    <tr>
+      <th>350</th>
+      <td>188.7030</td>
+      <td>0.0000</td>
+      <td>1.6506</td>
+      <td>6.3505</td>
+      <td>10.8245</td>
+      <td>15.2365</td>
+      <td>3.6526</td>
+      <td>1.1235</td>
+      <td>1.4319</td>
+      <td>30.0312</td>
+      <td>13.2948</td>
+    </tr>
+    <tr>
+      <th>351</th>
+      <td>136.1047</td>
+      <td>0.0000</td>
+      <td>1.6479</td>
+      <td>6.1364</td>
+      <td>10.6410</td>
+      <td>16.9166</td>
+      <td>3.3149</td>
+      <td>1.4260</td>
+      <td>1.3695</td>
+      <td>27.8804</td>
+      <td>9.2390</td>
+    </tr>
+    <tr>
+      <th>352</th>
+      <td>53.6116</td>
+      <td>0.0000</td>
+      <td>1.6865</td>
+      <td>6.2885</td>
+      <td>11.3918</td>
+      <td>17.8384</td>
+      <td>3.5881</td>
+      <td>1.1235</td>
+      <td>1.4444</td>
+      <td>30.0312</td>
+      <td>17.7950</td>
+    </tr>
+  </tbody>
+</table>
+<p>353 rows × 11 columns</p>
+</div>
+
+
+
+
+```python
+diabetes_test_bxcx
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>207.2323</td>
+      <td>0.0000</td>
+      <td>1.6619</td>
+      <td>6.2885</td>
+      <td>12.4284</td>
+      <td>21.7750</td>
+      <td>3.4649</td>
+      <td>1.6631</td>
+      <td>1.5215</td>
+      <td>29.7958</td>
+      <td>15.6305</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>270.5583</td>
+      <td>0.0000</td>
+      <td>1.6920</td>
+      <td>6.5080</td>
+      <td>10.5148</td>
+      <td>15.8907</td>
+      <td>3.3940</td>
+      <td>1.1235</td>
+      <td>1.4061</td>
+      <td>28.8452</td>
+      <td>9.6189</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>231.0426</td>
+      <td>0.5827</td>
+      <td>1.6636</td>
+      <td>6.3094</td>
+      <td>12.1874</td>
+      <td>18.8549</td>
+      <td>3.5881</td>
+      <td>1.4260</td>
+      <td>1.6178</td>
+      <td>29.0842</td>
+      <td>15.1228</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>275.6154</td>
+      <td>0.0000</td>
+      <td>1.7011</td>
+      <td>6.8044</td>
+      <td>11.6193</td>
+      <td>18.3409</td>
+      <td>2.9785</td>
+      <td>2.1560</td>
+      <td>1.6422</td>
+      <td>33.4704</td>
+      <td>15.9453</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>166.2229</td>
+      <td>0.5827</td>
+      <td>1.6506</td>
+      <td>6.3708</td>
+      <td>11.4096</td>
+      <td>19.0357</td>
+      <td>3.3634</td>
+      <td>1.6631</td>
+      <td>1.4444</td>
+      <td>29.5594</td>
+      <td>11.7696</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>84</th>
+      <td>153.1152</td>
+      <td>0.0000</td>
+      <td>1.6072</td>
+      <td>6.3505</td>
+      <td>10.7843</td>
+      <td>15.7496</td>
+      <td>3.5415</td>
+      <td>1.1235</td>
+      <td>1.4483</td>
+      <td>30.4998</td>
+      <td>13.4809</td>
+    </tr>
+    <tr>
+      <th>85</th>
+      <td>166.2229</td>
+      <td>0.0000</td>
+      <td>1.6460</td>
+      <td>6.1364</td>
+      <td>10.4287</td>
+      <td>14.3960</td>
+      <td>3.6526</td>
+      <td>0.7030</td>
+      <td>1.2864</td>
+      <td>30.7328</td>
+      <td>11.1545</td>
+    </tr>
+    <tr>
+      <th>86</th>
+      <td>119.6539</td>
+      <td>0.0000</td>
+      <td>1.6095</td>
+      <td>6.0679</td>
+      <td>9.3895</td>
+      <td>10.6047</td>
+      <td>3.5768</td>
+      <td>0.7030</td>
+      <td>1.3268</td>
+      <td>26.1547</td>
+      <td>7.1539</td>
+    </tr>
+    <tr>
+      <th>87</th>
+      <td>123.7124</td>
+      <td>0.0000</td>
+      <td>1.6023</td>
+      <td>5.9730</td>
+      <td>9.9500</td>
+      <td>14.0982</td>
+      <td>3.4649</td>
+      <td>1.1235</td>
+      <td>1.2411</td>
+      <td>27.1468</td>
+      <td>9.1735</td>
+    </tr>
+    <tr>
+      <th>88</th>
+      <td>81.2105</td>
+      <td>0.0000</td>
+      <td>1.6913</td>
+      <td>6.2461</td>
+      <td>10.4287</td>
+      <td>15.7810</td>
+      <td>3.3634</td>
+      <td>1.4260</td>
+      <td>1.3984</td>
+      <td>26.9003</td>
+      <td>14.5536</td>
+    </tr>
+  </tbody>
+</table>
+<p>89 rows × 11 columns</p>
+</div>
+
+
+
+Let's plot the distribution graph after box-cox transformation.
+
+
+```python
+fig, ax=plt.subplots(2,5, figsize=[15,15])
+sns.distplot(diabetes_train_bxcx['AGE'], ax=ax[0,0], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['SEX'], ax=ax[0,1], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['BMI'], ax=ax[0,2], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['BP'], ax=ax[0,3], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S1'], ax=ax[0,4], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S2'], ax=ax[1,0], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S3'], ax=ax[1,1], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S4'], ax=ax[1,2], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S5'], ax=ax[1,3], hist=False, kde=True)
+sns.distplot(diabetes_train_bxcx['S6'], ax=ax[1,4], hist=False, kde=True)
+```
+
+
+
+
+    <AxesSubplot:xlabel='S6', ylabel='Density'>
+
+
+
+
+    
+![png](Diabetes_files/Diabetes_72_1.png)
+    
+
+
+They look very close to the normal distribution now.
+
+#### Outliers
+
+
+```python
+diabetes_train_bxcx_desc = diabetes_train_bxcx.describe()
+diabetes_train_bxcx_desc
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AGE</th>
+      <th>SEX</th>
+      <th>BMI</th>
+      <th>BP</th>
+      <th>S1</th>
+      <th>S2</th>
+      <th>S3</th>
+      <th>S4</th>
+      <th>S5</th>
+      <th>S6</th>
+      <th>Y</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+      <td>353.0000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>155.5293</td>
+      <td>0.2740</td>
+      <td>1.6638</td>
+      <td>6.3729</td>
+      <td>10.8319</td>
+      <td>16.4966</td>
+      <td>3.3612</td>
+      <td>1.3974</td>
+      <td>1.4519</td>
+      <td>30.1434</td>
+      <td>12.9960</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>53.9258</td>
+      <td>0.2913</td>
+      <td>0.0346</td>
+      <td>0.2820</td>
+      <td>0.6865</td>
+      <td>2.2604</td>
+      <td>0.1885</td>
+      <td>0.3320</td>
+      <td>0.1009</td>
+      <td>2.7422</td>
+      <td>2.9753</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>41.0500</td>
+      <td>0.0000</td>
+      <td>1.5787</td>
+      <td>5.6029</td>
+      <td>8.9927</td>
+      <td>9.7129</td>
+      <td>2.7612</td>
+      <td>0.7030</td>
+      <td>1.1336</td>
+      <td>21.7299</td>
+      <td>5.8856</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>115.6324</td>
+      <td>0.0000</td>
+      <td>1.6404</td>
+      <td>6.1588</td>
+      <td>10.3412</td>
+      <td>15.0723</td>
+      <td>3.2445</td>
+      <td>1.1235</td>
+      <td>1.3816</td>
+      <td>28.3647</td>
+      <td>10.5372</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>161.8212</td>
+      <td>0.0000</td>
+      <td>1.6628</td>
+      <td>6.3505</td>
+      <td>10.8245</td>
+      <td>16.5024</td>
+      <td>3.3634</td>
+      <td>1.4260</td>
+      <td>1.4540</td>
+      <td>30.2659</td>
+      <td>13.0660</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>197.9086</td>
+      <td>0.5827</td>
+      <td>1.6892</td>
+      <td>6.5828</td>
+      <td>11.2466</td>
+      <td>17.9346</td>
+      <td>3.4914</td>
+      <td>1.6631</td>
+      <td>1.5239</td>
+      <td>31.8863</td>
+      <td>15.4839</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>296.0962</td>
+      <td>0.5827</td>
+      <td>1.7529</td>
+      <td>7.0467</td>
+      <td>12.7295</td>
+      <td>24.2282</td>
+      <td>3.8917</td>
+      <td>2.3090</td>
+      <td>1.6994</td>
+      <td>37.3972</td>
+      <td>18.7857</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+find_outliers(diabetes_train_bxcx_desc,3)
+```
+
+
+
+
+    ['AGE',
+     0,
+     0,
+     'SEX',
+     0,
+     0,
+     'BMI',
+     0,
+     0,
+     'BP',
+     0,
+     0,
+     'S1',
+     0,
+     0,
+     'S2',
+     9.715519053701172,
+     23.277633744631082,
+     'S3',
+     2.79561311865018,
+     0,
+     'S4',
+     0,
+     0,
+     'S5',
+     1.1492925602839887,
+     0,
+     'S6',
+     21.916667785610834,
+     0]
+
+
+
+
+```python
+diabetes_train_bxcx_clean = diabetes_train_bxcx.copy()
+diabetes_train_bxcx_clean = diabetes_train_bxcx_clean.loc[(diabetes_train_bxcx_clean['S2']<=23.28) & (diabetes_train_bxcx_clean['S2']>=9.72)]
+diabetes_train_bxcx_clean = diabetes_train_bxcx_clean.loc[diabetes_train_bxcx_clean['S3']>=2.80]
+diabetes_train_bxcx_clean = diabetes_train_bxcx_clean.loc[diabetes_train_bxcx_clean['S5']>=1.15]
+diabetes_train_bxcx_clean = diabetes_train_bxcx_clean.loc[diabetes_train_bxcx_clean['S6']>=21.92]
+```
+
+
+```python
+outliers_size = diabetes_train.shape[0] - diabetes_train_bxcx_clean.shape[0]
+outliers_percent = outliers_size*100/diabetes_train.shape[0]
+
+print('The number of outliers removed is:',outliers_size, '\nThat is',round(outliers_percent,2), '% of the data.')
+```
+
+    The number of outliers removed is: 6 
+    That is 1.7 % of the data.
+    
+
+## 4. Model Building
+
+We will try various regression models to fit in training data using repeated K-fold cross validation and keep the mean scores. 
+
+We will start with our standardized training data. Then, we will fit the models in our normalized data. Then, we will compare results.
+
+In the final step, we will select the best model and apply it to our unseen test data to measure its performance.
+
+#### List of Models
+
+
+```python
+#Models that will be used
+model_list = [LinearRegression, Lasso, Lars, Ridge, BayesianRidge, DecisionTreeRegressor, LinearSVR, KNeighborsRegressor,
+              RandomForestRegressor, GradientBoostingRegressor, ElasticNet, SGDRegressor, XGBRegressor,
+             LGBMRegressor, CatBoostRegressor]
+model_names = ['Linear Regression', 'Lasso', 'Lars','Ridge', 'Bayesian Ridge', 'Decision Tree Regressor', 'Linear SVR', 
+               'KNeighbors Regressor', 'Random Forest Regressor', 'Gradient Boosting Regressor', 'Elastic Net', 'SGD Regressor',
+              'XGB Regressor', 'LGBM Regressor','Cat Boost Regressor']
+```
+
+Let's create a function that iterates over all these regressors and give us a final mean score for each fold.
+
+
+```python
+def train_model(regressor_list, regressor_names, x_train, y_train):
+    training_scores = []
+    
+    for index, regressor in enumerate(regressor_list):
+        model = regressor()
+         
+        #keep the mean of cross validation scores of the training set
+        cv = RepeatedKFold(n_splits=5, n_repeats=2, random_state=42)
+        
+        #Avoid printing iteration results of Cat Boost Regressor
+        if regressor_names[index] == 'Cat Boost Regressor':
+            scores = cross_val_score(model, x_train, y_train, scoring='r2', cv=cv, fit_params={'verbose': False})
+        else:
+            scores = cross_val_score(model, x_train, y_train, scoring='r2', cv=cv)
+        training_scores.append(scores.mean())
+    
+    #create a dataframe to present results
+    data = {'Regressor Names': regressor_names,
+            'Training Score': training_scores}
+    
+    #maximum 4 decimal points should be sufficient to compare score values
+    pd.options.display.float_format = '{:.4f}'.format
+    df = pd.DataFrame(data)
+    
+    return df.sort_values(by='Training Score', ascending=False).reset_index(drop=True)
+```
+
+#### Normalized Data Training Scores
+
+
+```python
+X_train_normal = diabetes_train_normal.drop(columns='Y')
+Y_train_normal = diabetes_train_normal['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_normal, Y_train_normal)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Linear Regression</td>
+      <td>0.4811</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Ridge</td>
+      <td>0.4805</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4799</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Linear SVR</td>
+      <td>0.4595</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Random Forest Regressor</td>
+      <td>0.4063</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3864</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>LGBM Regressor</td>
+      <td>0.3807</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3798</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>KNeighbors Regressor</td>
+      <td>0.3529</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>SGD Regressor</td>
+      <td>0.2808</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>XGB Regressor</td>
+      <td>0.2506</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Lasso</td>
+      <td>-0.0252</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Elastic Net</td>
+      <td>-0.0252</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.1195</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Lars</td>
+      <td>-54.2057</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Normalized Data Training Scores after Outliers removed
+
+
+```python
+X_train_normal_clean = diabetes_train_normal_clean.drop(columns='Y')
+Y_train_normal_clean = diabetes_train_normal_clean['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_normal_clean, Y_train_normal_clean)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ridge</td>
+      <td>0.4765</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4754</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Linear Regression</td>
+      <td>0.4706</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Linear SVR</td>
+      <td>0.4645</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Random Forest Regressor</td>
+      <td>0.4119</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3888</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3875</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>LGBM Regressor</td>
+      <td>0.3437</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>KNeighbors Regressor</td>
+      <td>0.3405</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>XGB Regressor</td>
+      <td>0.3082</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>SGD Regressor</td>
+      <td>0.2878</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Lasso</td>
+      <td>-0.0175</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Elastic Net</td>
+      <td>-0.0175</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.0951</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Lars</td>
+      <td>-1.0769</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Normalized Data Test Score
+
+
+```python
+X_test_normal = diabetes_test_normal.drop(columns='Y')
+Y_test_normal = diabetes_test_normal['Y']
+```
+
+
+```python
+#model selection
+model = Ridge()
+
+#fitting it on the training set
+model.fit(X_train_normal_clean, Y_train_normal_clean)
+
+#predict the y values based on X_test
+y_pred = model.predict(X_test_normal)
+        
+#r2score of the test set
+print('The prediction score is {:.4f}'.format(r2_score(Y_test_normal, y_pred)))
+```
+
+    The prediction score is 0.4528
+    
+
+#### Standardized Data Training Scores 
+
+
+```python
+X_train_standard = diabetes_train_standard.drop(columns='Y')
+Y_train_standard = diabetes_train_standard['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_standard, Y_train_standard)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Ridge</td>
+      <td>0.4812</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Linear Regression</td>
+      <td>0.4811</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4799</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>SGD Regressor</td>
+      <td>0.4784</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Linear SVR</td>
+      <td>0.4610</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Random Forest Regressor</td>
+      <td>0.4124</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3864</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>LGBM Regressor</td>
+      <td>0.3806</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3778</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighbors Regressor</td>
+      <td>0.3508</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>XGB Regressor</td>
+      <td>0.2716</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Elastic Net</td>
+      <td>0.0605</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Lasso</td>
+      <td>-0.0252</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.1436</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Lars</td>
+      <td>-54.2057</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Standardized Data Training Scores after Outliers removed
+
+
+```python
+X_train_standard_clean = diabetes_train_standard_clean.drop(columns='Y')
+Y_train_standard_clean = diabetes_train_standard_clean['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_standard_clean, Y_train_standard_clean)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4750</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>SGD Regressor</td>
+      <td>0.4749</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ridge</td>
+      <td>0.4723</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Linear Regression</td>
+      <td>0.4706</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Linear SVR</td>
+      <td>0.4592</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Random Forest Regressor</td>
+      <td>0.4161</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3874</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3867</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>LGBM Regressor</td>
+      <td>0.3565</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighbors Regressor</td>
+      <td>0.3427</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>XGB Regressor</td>
+      <td>0.3134</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>Elastic Net</td>
+      <td>0.0413</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Lasso</td>
+      <td>-0.0175</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.0797</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>Lars</td>
+      <td>-1.0769</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Standardized Data Test Score
+
+
+```python
+X_test_standard = diabetes_test_standard.drop(columns='Y')
+Y_test_standard = diabetes_test_standard['Y']
+```
+
+
+```python
+#model selection
+model = BayesianRidge()
+
+#fitting it on the training set
+model.fit(X_train_standard_clean, Y_train_standard_clean)
+
+#predict the y values based on X_test
+y_pred = model.predict(X_test_standard)
+        
+#r2score of the test set
+print('The prediction score is {:.4f}'.format(r2_score(Y_test_standard, y_pred)))
+```
+
+    The prediction score is 0.4510
+    
+
+#### Box-Cox Transformed Data Training Scores
+
+
+```python
+X_train_bxcx = diabetes_train_bxcx.drop(columns='Y')
+Y_train_bxcx = diabetes_train_bxcx['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_bxcx, Y_train_bxcx)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Linear Regression</td>
+      <td>0.4583</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4522</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Ridge</td>
+      <td>0.4131</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Random Forest Regressor</td>
+      <td>0.3883</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>LGBM Regressor</td>
+      <td>0.3682</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3573</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3414</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>XGB Regressor</td>
+      <td>0.2489</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Lars</td>
+      <td>0.1734</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Elastic Net</td>
+      <td>0.1100</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Lasso</td>
+      <td>0.1020</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>KNeighbors Regressor</td>
+      <td>-0.1010</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Linear SVR</td>
+      <td>-0.1061</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.2377</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>SGD Regressor</td>
+      <td>-15718020453920521100197888.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Box-Cox Transformed Data Training Scores after Outliers removed¶
+
+
+```python
+X_train_bxcx_clean = diabetes_train_bxcx_clean.drop(columns='Y')
+Y_train_bxcx_clean = diabetes_train_bxcx_clean['Y']
+```
+
+
+```python
+train_model(model_list, model_names, X_train_bxcx_clean, Y_train_bxcx_clean)
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Regressor Names</th>
+      <th>Training Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Linear Regression</td>
+      <td>0.4657</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Bayesian Ridge</td>
+      <td>0.4588</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Lars</td>
+      <td>0.4406</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Ridge</td>
+      <td>0.4186</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Random Forest Regressor</td>
+      <td>0.4051</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Cat Boost Regressor</td>
+      <td>0.3742</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>LGBM Regressor</td>
+      <td>0.3589</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Gradient Boosting Regressor</td>
+      <td>0.3543</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>XGB Regressor</td>
+      <td>0.2672</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Elastic Net</td>
+      <td>0.1124</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Lasso</td>
+      <td>0.1026</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>KNeighbors Regressor</td>
+      <td>-0.0885</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>Decision Tree Regressor</td>
+      <td>-0.1237</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>Linear SVR</td>
+      <td>-0.2309</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>SGD Regressor</td>
+      <td>-19125090626846274220982272.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+#### Box-Cox Transformed Data Test  Score
+
+
+```python
+X_test_bxcx = diabetes_test_bxcx.drop(columns='Y')
+Y_test_bxcx = diabetes_test_bxcx['Y']
+```
+
+
+```python
+#model selection
+model = LinearRegression()
+
+#fitting it on the training set
+model.fit(X_train_bxcx_clean, Y_train_bxcx_clean)
+
+#predict the y values based on X_test
+y_pred = model.predict(X_test_bxcx)
+        
+#r2score of the test set
+print('The prediction score is {:.4f}'.format(r2_score(Y_test_bxcx, y_pred)))
+```
+
+    The prediction score is 0.4237
+    
+
+The best score so far was Linear Regression without removing outliers.
+
+
+```python
+best_score_train = 0.4811
+```
+
+### PCR (Principal Component Regression)
+
+PCR is the combination of Principal Components Analysis (PCA) decomposition with linear regression.
+
+PCA is affected by scale, so we need to scale the features in our data before applying PCA. We will use the standardized dataset (mean = 0 and standard deviation = 1) which is a requirement for the optimal performance of many Machine Learning algorithms.
+
+
+```python
+# Generate all the principal components
+pca = PCA() 
+X_train_pc = pca.fit_transform(X_train_standard)
+```
+
+
+```python
+# View first 5 rows of all principal components
+pd.DataFrame(pca.components_.T).loc[:4,:]
+```
+
+
+
+
+<div>
+ 
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>5</th>
+      <th>6</th>
+      <th>7</th>
+      <th>8</th>
+      <th>9</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.2101</td>
+      <td>0.1139</td>
+      <td>0.4236</td>
+      <td>-0.4876</td>
+      <td>-0.6764</td>
+      <td>-0.2462</td>
+      <td>-0.0647</td>
+      <td>-0.0543</td>
+      <td>0.0195</td>
+      <td>0.0039</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.1602</td>
+      <td>-0.4031</td>
+      <td>-0.1072</td>
+      <td>-0.6829</td>
+      <td>0.3460</td>
+      <td>0.0673</td>
+      <td>-0.0096</td>
+      <td>0.4571</td>
+      <td>-0.0278</td>
+      <td>0.0015</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.3124</td>
+      <td>-0.1231</td>
+      <td>0.2379</td>
+      <td>0.4433</td>
+      <td>0.0607</td>
+      <td>-0.4198</td>
+      <td>-0.4425</td>
+      <td>0.5077</td>
+      <td>0.0203</td>
+      <td>0.0137</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.2535</td>
+      <td>-0.0451</td>
+      <td>0.5578</td>
+      <td>-0.0605</td>
+      <td>0.5647</td>
+      <td>-0.2099</td>
+      <td>0.1589</td>
+      <td>-0.4793</td>
+      <td>0.0317</td>
+      <td>-0.0044</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.3548</td>
+      <td>0.5442</td>
+      <td>-0.1596</td>
+      <td>-0.0663</td>
+      <td>0.1249</td>
+      <td>0.0245</td>
+      <td>0.0959</td>
+      <td>0.1178</td>
+      <td>-0.0445</td>
+      <td>0.7119</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+np.cumsum(pca.explained_variance_ratio_)
+```
+
+
+
+
+    array([0.39688108, 0.54467848, 0.6698445 , 0.77093158, 0.83676055,
+           0.89611157, 0.94814822, 0.99151325, 0.99907676, 1.        ])
+
+
+
+
+```python
+# Initialize regression instance
+regr = LinearRegression()
+
+# Create empty list to store R2 scores for each iteration
+r2_list = []
+
+# Loop through different count of principal components for linear regression
+for i in range(1, X_train_pc.shape[1]+1):
+    r2_score = cross_val_score(regr, 
+                                      X_train_pc[:,:i], # Use first k principal components
+                                      Y_train_standard, 
+                                      cv=cv, 
+                                      scoring='r2').mean()
+    r2_list.append(r2_score)
+    
+# Visual analysis - plot R2 vs count of principal components used
+plt.plot(r2_list, '-o')
+plt.xlabel('Number of principal components in regression')
+plt.ylabel('R2')
+plt.title('Y')
+plt.xlim(xmin=-1);
+plt.xticks(np.arange(X_train_pc.shape[1]), np.arange(1, X_train_pc.shape[1]+1))
+plt.axhline(y=best_score_train, color='g', linestyle='-');
+```
+
+
+    
+![png](Diabetes_files/Diabetes_116_0.png)
+    
+
+
+As seen in the graph, PCA did not perform better than Linear Regression model.
+
+So, the best model was Linear Regression so far. It has a 48% accuracy on the training set and 45% on the test set.
