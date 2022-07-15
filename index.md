@@ -66,7 +66,7 @@ In this project, I analyze titanic dataset and build Machine Learning models to 
 
 ### My Lesson Notes
 
-- [Pandas](/pdf/Pandas.pdf)
+- [Probability, Statistics and Simulations](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Best_Choice_Secretary_Problem_Simulation.md)
 - [Data Visualizations](/pdf/Data_Visualizations.pdf)
 
 
