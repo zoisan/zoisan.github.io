@@ -57,7 +57,7 @@ In this project, I analyze titanic dataset and build Machine Learning models to 
 
 - [Secretary (Best Choice) Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
 - [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
-- [Probability, Statistics and Simulations](http://example.com/)
+- [Birthday Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Birthday_Problem.md)
 - [Project 4 Title](http://example.com/)
 - [Project 5 Title](http://example.com/)
 
