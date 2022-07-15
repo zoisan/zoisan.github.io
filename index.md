@@ -53,21 +53,14 @@ In this project, I analyze titanic dataset and build Machine Learning models to 
 
 ---
 
-### Micro Projects
+### Probability, Statistics and Simulations
 
-- [Data Analysis in Pandas](http://example.com/)
-- [EDA and Visualizations](http://example.com/)
+- [Secretary (Best Choice) Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
+- [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
 - [Probability, Statistics and Simulations](http://example.com/)
 - [Project 4 Title](http://example.com/)
 - [Project 5 Title](http://example.com/)
 
-
----
-
-### My Lesson Notes
-
-- [Probability, Statistics and Simulations](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
-- [Data Visualizations](/pdf/Data_Visualizations.pdf)
 
 
 
