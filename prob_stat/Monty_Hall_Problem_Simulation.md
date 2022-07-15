@@ -6,7 +6,7 @@
 
 <u>Simple solution:</u>, The three possible arrangements of one car and two goats behind three doors and the result of staying or switching after initially picking door 1 in each case is shown below:
 
-![image-2.png](attachment:image-2.png)
+![png](Monty_Hall_Problem_Simulation_files/doors_monty.png)
 
 A player who stays with the initial choice wins in only one out of three of these equally likely possibilities, while a player who switches wins in two out of three. 
 
@@ -14,7 +14,7 @@ A player who stays with the initial choice wins in only one out of three of thes
 
 By definition, the conditional probability of winning by switching given the contestant initially picks door 1 and the host opens door 3 is the probability for the event "car is behind door 2 and host opens door 3" divided by the probability for "host opens door 3". These probabilities can be determined referring to the conditional probability table, or to an equivalent decision tree as shown below. The conditional probability of winning by switching is $\frac{\frac{1}{3}}{\frac{1}{3}+\frac{1}{6}} = \frac{2}{3}$.
 
-![image-3.png](attachment:image-3.png)
+![png](Monty_Hall_Problem_Simulation_files/trees_monty.png)
 
 
 ```python
