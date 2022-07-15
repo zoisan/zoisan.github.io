@@ -10,7 +10,7 @@ We will be using the cut-off rule form the <b>optimal stopping theory</b>. In ma
 
 <b>Here is the math behind it:</b>
 
-![image.png](attachment:image.png)
+![png](Secretary_Best_Choice_Problem_Simulation_files/best_choice.png)
 
 <b>The cut-off rule:</b> P(r) is maxed when P'(r)=0, which yields, r ~ N/e ~ N*0.368
 
