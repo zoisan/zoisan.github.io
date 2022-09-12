@@ -2,7 +2,7 @@
 
 Repository containing portfolio of data science projects completed by me during Data Science/AI Bootcamp. Projects are presented in the form of iPython Notebooks.
 
----
+
 ## Deep Learning Projects
 
 ---
@@ -17,7 +17,7 @@ In this project, I develop a Feed Forward and Convolutional Neural Networks for 
 ## Machine Learning Projects
 
 ---
-### Diamonds price prediction with Regression Models
+- ### Diamonds price prediction with Regression Models
 
 In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
@@ -29,7 +29,7 @@ In this project, I analyze diamonds dataset and build Machine Learning models to
 
 ---
 
-### Diabetes disease progression prediction with Regression Models
+- ### Diabetes disease progression prediction with Regression Models
 
 In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
 
@@ -39,7 +39,7 @@ In this project, I analyze diabetes dataset and build Machine Learning models to
 
 ---
 
-### Titanic passenger survival prediction with Classification Models
+- ### Titanic passenger survival prediction with Classification Models
 
 In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
