@@ -26,7 +26,7 @@ In this project, I analyze diabetes dataset and build Machine Learning models to
 
 ---
 
-### Titanic passanger survival prediction with Classification Models
+### Titanic passenger survival prediction with Classification Models
 
 In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
@@ -37,29 +37,13 @@ In this project, I analyze titanic dataset and build Machine Learning models to 
 
 ---
 
-### Machine Learning 
-
-- [Project 3 Title](http://example.com/)
-- [Project 4 Title](http://example.com/)
-- [Project 5 Title](http://example.com/)
-
-
----
-
-### NLP 
-
-[Project 6 Title](http://example.com/)
-
-
----
 
 ### Probability, Statistics and Simulations
 
 - [Secretary (Best Choice) Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
 - [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
-- [Probability, Statistics and Simulations](http://example.com/)
-- [Project 4 Title](http://example.com/)
-- [Project 5 Title](http://example.com/)
+- [Birthday Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Birthday_Problem.md)
+
 
 
 
