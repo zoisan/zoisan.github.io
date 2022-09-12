@@ -6,12 +6,10 @@ Repository containing portfolio of data science projects completed by me during 
 ## Deep Learning Projects
 
 ---
-- ### MNIST Dataset
+- ### [MNIST Dataset](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
 
-In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
+  In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
 
-
-[MNIST](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
 
 ---
 ## Machine Learning Projects
@@ -23,29 +21,18 @@ In this project, I develop a Feed Forward and Convolutional Neural Networks for 
 
 
 
+---
 
+- ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
+
+  In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
 
 
 ---
 
-- ### Diabetes disease progression prediction with Regression Models
+- ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
-In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
-
-[Diabetes](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
-
-
-
----
-
-- ### Titanic passenger survival prediction with Classification Models
-
-In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
-
-[Titanic](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
-
-
-
+  In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
 ---
 
