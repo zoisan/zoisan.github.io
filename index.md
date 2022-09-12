@@ -6,7 +6,7 @@ Repository containing portfolio of data science projects completed by me during 
 ## Deep Learning Projects
 
 ---
-### MNIST Dataset
+- ### MNIST Dataset
 
 In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
 
