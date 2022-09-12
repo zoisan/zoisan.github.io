@@ -211,7 +211,7 @@ plt.show()
 
 
     
-![png](output_13_0.png)
+![png](MNIST_files/output_13_0.png)
     
 
 
@@ -401,7 +401,7 @@ plt.show()
 
 
     
-![png](output_27_0.png)
+![png](MNIST_files/output_27_0.png)
     
 
 
@@ -563,7 +563,7 @@ plt.show()
 
 
     
-![png](output_35_0.png)
+![png](MNIST_files/output_35_0.png)
     
 
 
@@ -713,7 +713,7 @@ plt.show()
 
 
     
-![png](output_49_0.png)
+![png](MNIST_files/output_49_0.png)
     
 
 
