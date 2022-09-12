@@ -37,7 +37,7 @@ Repository containing portfolio of data science projects completed by me during 
 ---
 
 
-### Probability, Statistics and Simulations
+## Probability, Statistics and Simulations
 
 - [Secretary (Best Choice) Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
 - [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
