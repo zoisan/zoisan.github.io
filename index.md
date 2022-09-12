@@ -5,7 +5,6 @@ Repository containing portfolio of data science projects completed by me during 
 
 ## Deep Learning Projects
 
----
 - ### [MNIST Dataset](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
 
   In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
@@ -14,11 +13,9 @@ Repository containing portfolio of data science projects completed by me during 
 ---
 ## Machine Learning Projects
 
----
 - ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
   In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
-
 
 
 ---
