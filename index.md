@@ -19,9 +19,8 @@ In this project, I develop a Feed Forward and Convolutional Neural Networks for 
 ---
 - ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
-In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
+  In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
-[Diamonds](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
 
 
