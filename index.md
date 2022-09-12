@@ -1,7 +1,20 @@
 ## My Data Science Portfolio
 
-Repository containing portfolio of data science projects completed by me for self learning and hobby purposes. Projects are presented in the form of iPython Notebooks.
+Repository containing portfolio of data science projects completed by me during Data Science/AI Bootcamp. Projects are presented in the form of iPython Notebooks.
 
+---
+## Deep Learning Projects
+
+---
+### MNIST Dataset
+
+In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
+
+
+[MNIST](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
+
+---
+## Machine Learning Projects
 
 ---
 ### Diamonds price prediction with Regression Models
@@ -10,7 +23,7 @@ In this project, I analyze diamonds dataset and build Machine Learning models to
 
 [Diamonds](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
-<img src="images/diamonds.png?raw=true"/>
+
 
 
 
@@ -22,7 +35,7 @@ In this project, I analyze diabetes dataset and build Machine Learning models to
 
 [Diabetes](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
 
-<img src="images/diabetes.png?raw=true"/>
+
 
 ---
 
@@ -32,7 +45,7 @@ In this project, I analyze titanic dataset and build Machine Learning models to 
 
 [Titanic](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
-<img src="images/titanic.png?raw=true"/>
+
 
 
 ---
