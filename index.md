@@ -36,6 +36,10 @@ Repository containing portfolio of data science projects completed by me during 
 - [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
 - [Birthday Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Birthday_Problem.md)
 
+## Academic Projects
+
+- [Senior Project: Multicollinearity and Ridge Regression](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Senior_Project_Ismail_Savruk.pdf)
+
 
 
 
