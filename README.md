@@ -1,53 +1,45 @@
+## My Data Science Portfolio
 
-### Introduction
+Repository containing portfolio of data science projects completed by me during Data Science/AI Bootcamp. Projects are presented in the form of iPython Notebooks.
 
-Use this template if you need a quick developer / data science portfolio! Based on a Minimal Jekyll theme for GitHub Pages.
 
-___
+## Deep Learning Projects
 
-### Installation
+- ### [MNIST Dataset](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
 
-See full step by step tutorial [on Medium](https://medium.com/@evanca/set-up-your-portfolio-website-in-less-than-10-minutes-with-github-pages-d0efa8ff56fd).
+  In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
 
-You can use the editor on GitHub to maintain and preview the content for your website in Markdown files.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-___
+## Machine Learning Projects
 
-### Markdown
+- ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+  In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
 
-```markdown
-Syntax highlighted code block
 
-# Header 1
-## Header 2
-### Header 3
 
-- Bulleted
-- List
+- ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
 
-1. Numbered
-2. List
+  In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
 
-**Bold** and _Italic_ and `Code` text
 
-[Link](url) and ![Image](src)
-```
+- ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+  In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
 
-___
 
-### Roadmap
 
-See the [open issues](https://github.com/evanca/quick-portfolio/issues) for a list of proposed features (and known issues).
-___
+## Probability, Statistics and Simulations
 
-### References
+- [Secretary (Best Choice) Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Secretary_Best_Choice_Problem_Simulation.md)
+- [Monty Hall Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Monty_Hall_Problem_Simulation.md)
+- [Birthday Problem Simulation](https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Birthday_Problem.md)
 
-[1] Jekyll theme "Minimal" for GitHub Pages: https://github.com/pages-themes/minimal (CC0 1.0 Universal License)
-<br>[2] Dummy photo via: https://pixabay.com/photos/man-male-adult-person-caucasian-1209494/ (Pixabay License)
-<br>[3] Dummy thumbnail image created by rawpixel.com: https://www.freepik.com/free-vector/set-elements-infographic_2807573.htm (Standard Freepik License)
+
+
+
+
+
+<p style="font-size:11px">Page template forked from <a href="https://github.com/evanca/quick-portfolio">evanca</a></p>
+<!-- Remove above link if you don't want to attibute -->
