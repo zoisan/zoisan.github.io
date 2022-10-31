@@ -26,7 +26,7 @@ Repository containing portfolio of data science projects completed by me during 
 
 - ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
-  In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.
+  <p style="font-size:12px">In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.</p>
 
 
 
