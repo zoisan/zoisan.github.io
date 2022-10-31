@@ -15,13 +15,13 @@ Repository containing portfolio of data science projects completed by me during 
 
 - ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
-  In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.
+  <p style="font-size:14px">In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.</p>
 
 
 
 - ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
 
-  In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.
+  <p style="font-size:13px">In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.</p>
 
 
 - ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
