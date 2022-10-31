@@ -6,8 +6,8 @@ Repository containing portfolio of data science projects completed by me during 
 ## Deep Learning Projects
 
 - ### [MNIST Dataset](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
-
-  In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.
+  
+  <p style="font-size:13px">In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.</p>
 
 
 
@@ -15,7 +15,7 @@ Repository containing portfolio of data science projects completed by me during 
 
 - ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
 
-  <p style="font-size:14px">In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.</p>
+  <p style="font-size:13px">In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.</p>
 
 
 
@@ -26,7 +26,7 @@ Repository containing portfolio of data science projects completed by me during 
 
 - ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
-  <p style="font-size:12px">In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.</p>
+  <p style="font-size:13px">In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.</p>
 
 
 
