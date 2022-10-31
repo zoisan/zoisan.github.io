@@ -38,9 +38,7 @@ Repository containing portfolio of data science projects completed by me during 
 
 ## Academic Projects
 
-- [Senior Project: Multicollinearity and Ridge Regression](<src="https://github.com/zoisan/zoisan.github.io/blob/master/prob_stat/Senior_Project_Ismail_Savruk.pdf" type="application/pdf"/>)
-
-
+- [Senior Project: Multicollinearity and Ridge Regression](https://drive.google.com/file/d/1dlvHE-x92z9AQ0xfnp342jHiM-kJMykN/view)
 
 
 
