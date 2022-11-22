@@ -3,32 +3,30 @@
 Repository containing portfolio of data science projects completed by me during Data Science/AI Bootcamp. Projects are presented in the form of iPython Notebooks.
 
 
+
+
+## Machine Learning Projects
+
+- ### [The Effect of ALEKS (Math Software) on Mathematics Achivements on STAAR (Texas State Test)](https://github.com/zoisan/zoisan.github.io/blob/master/STAAR_ALEKS.md)
+
+  <p style="font-size:13px">In this project, I analyze our students' ALEKS Usage data and compare them with their STAAR Performance to find a correlation between
+  them.</p>
+
+## Data Science/AI Bootcamp Projects
+- ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
+
+- ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
+
+- ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
+
+
+
 ## Deep Learning Projects
 
 - ### [MNIST Dataset](https://github.com/zoisan/zoisan.github.io/blob/master/MNIST.md)
   
   <p style="font-size:13px">In this project, I develop a Feed Forward and Convolutional Neural Networks for MNIST Handwritten Digit Classification.</p>
-
-
-
-## Machine Learning Projects
-
-- ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
-
-  <p style="font-size:13px">In this project, I analyze diamonds dataset and build Machine Learning models to predict price values by their cut, color, clarity, dimensions and other attributes.</p>
-
-
-
-- ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
-
-  <p style="font-size:13px">In this project, I analyze diabetes dataset and build Machine Learning models to predict disease progression based on ten baseline variables of patients.</p>
-
-
-- ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
-
-  <p style="font-size:13px">In this project, I analyze titanic dataset and build Machine Learning models to predict predicts which passengers survived the Titanic shipwreck.</p>
-
-
+  
 
 ## Probability, Statistics and Simulations
 
