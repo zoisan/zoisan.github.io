@@ -1548,7 +1548,7 @@ fig.update_layout(
     height=800)
 fig.show()
 ```
-![png](ALEKS_Files/corr_matrix.png)
+![png](ALEKS_files/corr_matrix.png)
 
 
 It seems that there is some type of correlation between Target values and EOY Mastered Topics, EOY Mastery, and Progress.
@@ -1664,7 +1664,7 @@ fig1 = px.pie(df_new, values='EOY Mastered Topics', names='STAAR Performance',
 fig1.update_traces(textposition='inside', textinfo='percent+label')
 fig1.show()
 ```
-![png](ALEKS_Files/fig1.png)
+![png](ALEKS_files/fig1.png)
 
 As you see, students who "Fail" the STAAR test are accountable for only 14% of topics mastered by all students. On the other hand, students who "Master" the STAAR are responsible for the biggest chunk: 36%  of all topics mastered.
 
@@ -1680,7 +1680,7 @@ fig2 = px.pie(df_new, values='Progress', names='STAAR Performance',
 fig2.update_traces(textposition='inside', textinfo='percent+label')
 fig2.show()
 ```
-![png](ALEKS_Files/fig2.png)
+![png](ALEKS_files/fig2.png)
 
 This is really alligned with the above chart. Students who show less progress on ALEKS perform lower on STAAR test.
 
@@ -1695,7 +1695,7 @@ fig3.update_traces(textposition='inside', textinfo='percent+label')
 fig3.show()
 ```
 
-![png](ALEKS_Files/fig3.png)
+![png](ALEKS_files/fig3.png)
 
 
 
@@ -1802,7 +1802,7 @@ fig4 = px.pie(df_new, values='Learning Rate', names='STAAR Performance',
 fig4.update_traces(textposition='inside', textinfo='percent+label')
 fig4.show()
 ```
-![png](ALEKS_Files/fig4.png)
+![png](ALEKS_files/fig4.png)
 
 
 
@@ -3290,7 +3290,7 @@ print(classification_report(Y_test, y_pred))
 
 
     
-![png](ALEKS_Files/output_61_1.png)
+![png](ALEKS_files/output_61_1.png)
     
 
 
@@ -3340,7 +3340,7 @@ plt.xlabel("Feature Importance")
 
 
     
-![png](ALEKS_Files/output_64_1.png)
+![png](ALEKS_files/output_64_1.png)
     
 
 
@@ -3429,7 +3429,7 @@ plot_2d_space(X_train_pc, Y_train, '2 PCA components')
 
 
     
-![png](ALEKS_Files/output_73_0.png)
+![png](ALEKS_files/output_73_0.png)
     
 
 
@@ -3452,7 +3452,7 @@ plt.ylabel('cumulative explained variance')
 
 
     
-![png](ALEKS_Files/output_75_1.png)
+![png](ALEKS_files/output_75_1.png)
     
 
 
@@ -3861,7 +3861,7 @@ plt.show()
 
 
     
-![png](ALEKS_Files/output_100_0.png)
+![png](ALEKS_files/output_100_0.png)
     
 
 
@@ -3898,7 +3898,7 @@ plt.show()
 
 
     
-![png](ALEKS_Files/output_105_0.png)
+![png](ALEKS_files/output_105_0.png)
     
 
 
