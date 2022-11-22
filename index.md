@@ -7,7 +7,7 @@ Repository containing portfolio of data science projects completed by me during 
 
 ## Machine Learning Projects
 
-- ### [The Effect of ALEKS (Math Software) on Mathematics Achivements on STAAR (Texas State Test)](https://github.com/zoisan/zoisan.github.io/blob/master/STAAR_ALEKS.md)
+- ### [The Effect of ALEKS (Math Software) on Mathematics Achivements on STAAR (Texas State Test)](https://github.com/zoisan/zoisan.github.io/blob/master/ALEKS_STAAR.md)
 
   <p style="font-size:13px">In this project, I analyze our students' ALEKS Usage data and compare them with their STAAR Performance to find a correlation between
   them.</p>
