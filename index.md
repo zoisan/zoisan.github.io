@@ -12,12 +12,6 @@ Repository containing portfolio of data science projects completed by me during 
   <p style="font-size:13px">In this project, I analyze our students' ALEKS Usage data and compare them with their STAAR Performance to find a correlation between
   them.</p>
 
-## Data Science/AI Bootcamp Projects
-- ### [Diamonds price prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diamonds.md)
-
-- ### [Diabetes disease progression prediction with Regression Models](https://github.com/zoisan/zoisan.github.io/blob/master/Diabetes.md)
-
-- ### [Titanic passenger survival prediction with Classification Models](https://github.com/zoisan/zoisan.github.io/blob/master/Titanic.md)
 
 
 
